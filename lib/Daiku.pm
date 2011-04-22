@@ -28,7 +28,7 @@ sub build {
 
     my $task = $self->find_task($target);
     if ($task) {
-        $task->build();
+        $task->build($target);
     } else {
         die "There is no rule to build '$target'";
     }
@@ -42,7 +42,7 @@ sub find_task {
     return undef;
 }
 
-# TODO split file
+# This is .PHONY target.
 package Daiku::Task;
 use File::stat;
 use Class::Accessor::Lite 0.05 (
@@ -97,18 +97,47 @@ sub build_deps {
     for my $target (@{$self->deps || []}) {
         my $task = $Daiku::CONTEXT->find_task($target);
         if ($task) {
-            $ret += $task->build();
+            $ret += $task->build($target);
         } else {
             if (-f $target) {
-                if (stat($target)->mtime > $self->mtime) {
-                    $ret++; # require rebuild
-                }
+                $ret += sub {
+                    my $m1 = stat($target)->mtime;
+                    my $m2 = $self->mtime;
+                    return 1 unless $m2;
+                    return 1 if $m2 < $m1;
+                    return 0;
+                }->();
             } else {
                 die "I don't know to build '$target' depended by '$self->{target}'";
             }
         }
     }
     return !!$ret;
+}
+
+# Suffix Rule, same as Makefile.
+# like '.c.o' in Makefile.
+package Daiku::SuffixRule;
+
+use Class::Accessor::Lite 0.05 (
+    rw => [qw(
+        src
+        dst
+        code
+    )],
+    new => 1,
+);
+
+sub match {
+    my ($self, $target) = @_;
+    return 1 if $target =~ /\Q$self->{dst}\E$/;
+    return 0;
+}
+
+sub build {
+    my ($self, $target) = @_;
+    (my $src = $target) =~ s/\Q$self->{dst}\E$/$self->{src}/;
+    $self->code->($src, $target);
 }
 
 1;

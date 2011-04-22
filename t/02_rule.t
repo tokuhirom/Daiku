@@ -26,16 +26,14 @@ $daiku->add(
     )
 );
 $daiku->add(
-    Daiku::Task->new(
-        target => 'b.o',
-        code   => sub { compile('b.c' => 'b.o') }
-    )
-);
-$daiku->add(
-    Daiku::Task->new(
-        target => 'c.o',
-        deps   => [qw/c.c/],
-        code   => sub { compile('c.c' => 'c.o') }
+    Daiku::SuffixRule->new(
+        src => '.c',
+        dst => '.o',
+        code   => sub {
+            my ($src, $dst) = @_;
+            note "Compiling: $src => $dst";
+            compile($src => $dst)
+        }
     )
 );
 write_file("c.c", "c1");
