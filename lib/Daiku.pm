@@ -37,7 +37,7 @@ sub build {
 sub find_task {
     my ($self, $target) = @_;
     for my $task (@{$self->{tasks}}) {
-        return $task if $task->{target} eq $target;
+        return $task if $task->match($target);
     }
     return undef;
 }
@@ -72,6 +72,12 @@ sub build {
     return $rebuild;
 }
 
+sub match {
+    my ($self, $target) = @_;
+    return 1 if $self->{target} eq $target;
+    return 0;
+}
+
 sub mtime {
     my $self = shift;
     if (!exists $self->{mtime}) {
@@ -98,7 +104,7 @@ sub build_deps {
                     $ret++; # require rebuild
                 }
             } else {
-                die "I don't know to build '$target' dependedby '$self->{target}'";
+                die "I don't know to build '$target' depended by '$self->{target}'";
             }
         }
     }
