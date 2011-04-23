@@ -29,5 +29,10 @@ sub log {
     print "[LOG] @msg\n";
 }
 
+sub debug {
+    my ($class, @msg) = @_;
+    print "[LOG][DBG] @msg\n" if $ENV{DAIKU_DEBUG};
+}
+
 1;
 
