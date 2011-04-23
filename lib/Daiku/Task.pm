@@ -27,14 +27,16 @@ has code => (
     },
 );
 
+# @return affected things
 sub build {
     my ($self) = @_;
     $self->log("Building Task: $self->{dst}");
 
     my $rebuild = $self->_build_deps();
-    if ($self->code) {
-        $self->code->($self);
-    }
+
+    $self->code->($self);
+    $rebuild++;
+
     return $rebuild;
 }
 
@@ -55,13 +57,13 @@ sub _build_deps {
             $ret += $task->build($target);
         } else {
             if (-f $target) {
-                $ret += 1;
+                # nop
             } else {
                 die "I don't know to build '$target' depended by '$self->{dst}'";
             }
         }
     }
-    return !!$ret;
+    return $ret;
 }
 
 no Mouse;

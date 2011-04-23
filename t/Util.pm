@@ -5,7 +5,15 @@ use utf8;
 package t::Util;
 use parent qw/Exporter/;
 
-our @EXPORT = qw/slurp link_ compile write_file tmpdir/;
+our @EXPORT = qw/slurp link_ compile write_file tmpdir touch/;
+
+sub touch {
+    my $diff = shift;
+    my $fname = shift;
+    my $time = time() + $diff;
+    utime($time, $time, $fname);
+}
+
 
 sub tmpdir() {
 	t::Util::TmpDir->new();

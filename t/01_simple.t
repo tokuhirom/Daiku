@@ -23,8 +23,9 @@ $daiku->register(
 );
 $daiku->register(
     Daiku::File->new(
-        dst => 'b.o',
-        code   => sub { compile('b.c' => 'b.o') }
+        dst  => 'b.o',
+        deps => ['b.c'],
+        code => sub { compile( 'b.c' => 'b.o' ) }
     )
 );
 $daiku->register(
@@ -36,11 +37,12 @@ $daiku->register(
 );
 write_file("c.c", "c1");
 write_file("b.c", "b1");
-$daiku->build('a.out');
+is($daiku->build('a.out'), 3);
 my $c_o_mtime1 = stat('c.o')->mtime;
 is(slurp('a.out'), "OBJ:b1\nOBJ:c1");
 write_file("b.c", "b2");
-$daiku->build('b.o');
+touch(1, 'b.c');
+is($daiku->build('b.o'), 2);
 is(slurp('b.o'), "OBJ:b2");
 is(slurp('a.out'), "OBJ:b1\nOBJ:c1");
 $daiku->build('a.out');

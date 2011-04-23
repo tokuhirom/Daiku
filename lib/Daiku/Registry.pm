@@ -29,7 +29,7 @@ sub build {
 
     my $task = $self->find_task($target);
     if ($task) {
-        $task->build($target);
+        return $task->build($target);
     } else {
         die "There is no rule to build '$target'";
     }
