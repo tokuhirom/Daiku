@@ -5,6 +5,48 @@ package Daiku;
 use 5.008001;
 our $VERSION = '0.01';
 
+sub import {
+    my ($class) = @_;
+    my $pkg = caller(0);
+    no strict 'refs';
+    *{"${pkg}::task"} = \&_task;
+    *{"${pkg}::file"} = \&_file;
+    *{"${pkg}::suffix_rule"} = \&_suffix_rule;
+    my $engine = Daiku::Engine->new();
+    *{"${pkg}::engine"} = sub { $engine };
+    *{"${pkg}::build"} = sub { $engine->build(@_) };
+}
+
+# task 'all' => ['a', 'b'];
+# task 'all' => ['a', 'b'] => sub { ... };
+sub _task($$;$) {
+    my ($dst, $deps, $code) = @_;
+    $deps = [$deps] if !ref $deps;
+    my $task = Daiku::Task->new( dst => $dst, deps => $deps );
+    $task->code($code) if $code;
+    caller(0)->engine->add($task);
+}
+
+# file 'all' => ['a', 'b'];
+# file 'all' => 'a';
+# file 'all' => ['a', 'b'] => sub { ... };
+sub _file($$;$) {
+    my ($dst, $deps, $code) = @_;
+    $deps = [$deps] if !ref $deps;
+    my $file = Daiku::File->new( dst => $dst, deps => $deps );
+    $file->code($code) if $code;
+    caller(0)->engine->add($file);
+}
+
+# suffix_rule '.c' => '.o' => sub { ... };
+sub _suffix_rule($$;$) {
+    my ($dst, $deps, $code) = @_;
+    $deps = [$deps] if !ref $deps;
+    my $suffix_rule = Daiku::SuffixRule->new( dst => $dst, deps => $deps );
+    $suffix_rule->code($code) if $code;
+    caller(0)->engine->add($suffix_rule);
+}
+
 package Daiku::Engine;
 use Mouse;
 
@@ -60,6 +102,7 @@ has dst => (
 has deps => (
     is  => 'rw',
     isa => 'ArrayRef[Str]',
+    default => sub { +[ ] },
 );
 has code => (
     is      => 'rw',
@@ -113,20 +156,20 @@ use File::stat;
 use Mouse;
 
 has dst => (
-    is       => 'ro',
+    is       => 'rw',
     isa      => 'Str',
     required => 1,
 );
 
 has deps => (
-    is       => 'ro',
+    is       => 'rw',
     isa      => 'ArrayRef[Str]',
     required => 1,
     default  => sub { +[] },
 );
 
 has code => (
-    is      => 'ro',
+    is      => 'rw',
     isa     => 'CodeRef',
     default => sub {
         sub { }

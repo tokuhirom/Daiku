@@ -2,7 +2,6 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use File::Temp qw/tempdir/;
 use Cwd;
 use Fatal;
 use File::stat;
@@ -10,10 +9,7 @@ use t::Util;
 
 use Daiku;
 
-my $dir = tempdir(CLENAUP => 1);
-
-my $cwd = Cwd::getcwd();
-chdir($dir);
+my $guard = tmpdir();
 
 my @ret;
 
@@ -52,8 +48,6 @@ is(slurp('a.out'), "OBJ:b2\nOBJ:c1");
 my $c_o_mtime2 = stat('c.o')->mtime;
 is($c_o_mtime1, $c_o_mtime2, 'is not modified.');
 
-chdir($cwd); # back to orig dir
-
-done_testing; exit;
+done_testing;
 
 
