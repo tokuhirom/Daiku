@@ -69,7 +69,7 @@ has code => (
 sub build {
     my ($self) = @_;
 
-    my $rebuild = $self->build_deps();
+    my $rebuild = $self->_build_deps();
     if ($self->code) {
         $self->code->();
     }
@@ -82,7 +82,7 @@ sub match {
     return 0;
 }
 
-sub mtime {
+sub _mtime {
     my $self = shift;
     if (!exists $self->{mtime}) {
         $self->{mtime} = do {
@@ -94,7 +94,7 @@ sub mtime {
 }
 
 # @return need rebuild
-sub build_deps {
+sub _build_deps {
     my ($self) = @_;
 
     my $ret = 0;
@@ -106,7 +106,7 @@ sub build_deps {
             if (-f $target) {
                 $ret += sub {
                     my $m1 = stat($target)->mtime;
-                    my $m2 = $self->mtime;
+                    my $m2 = $self->_mtime;
                     return 1 unless $m2;
                     return 1 if $m2 < $m1;
                     return 0;
@@ -118,6 +118,7 @@ sub build_deps {
     }
     return !!$ret;
 }
+
 no Mouse;
 __PACKAGE__->meta->make_immutable;
 
