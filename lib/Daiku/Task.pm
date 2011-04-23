@@ -33,7 +33,7 @@ sub build {
 
     my $rebuild = $self->_build_deps();
     if ($self->code) {
-        $self->code->();
+        $self->code->($self);
     }
     return $rebuild;
 }
