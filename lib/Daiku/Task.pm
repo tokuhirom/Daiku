@@ -32,12 +32,12 @@ sub build {
     my ($self) = @_;
     $self->log("Building Task: $self->{dst}");
 
-    my $rebuild = $self->_build_deps();
+    my $built = $self->_build_deps();
 
     $self->code->($self);
-    $rebuild++;
+    $built++;
 
-    return $rebuild;
+    return $built;
 }
 
 sub match {
@@ -46,7 +46,7 @@ sub match {
     return 0;
 }
 
-# @return need rebuild
+# @return the number of built tasks
 sub _build_deps {
     my ($self) = @_;
 
@@ -56,11 +56,7 @@ sub _build_deps {
         if ($task) {
             $ret += $task->build($target);
         } else {
-            if (-f $target) {
-                # nop
-            } else {
-                die "I don't know to build '$target' depended by '$self->{dst}'";
-            }
+            die "I don't know to build '$target' depended by '$self->{dst}'";
         }
     }
     return $ret;

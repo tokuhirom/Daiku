@@ -65,11 +65,7 @@ sub _build_deps {
                 $need_rebuild += $self->_check_need_rebuild($target);
             }
         } else {
-            if (-f $target) {
-                $need_rebuild += $self->_check_need_rebuild($target);
-            } else {
-                die "I don't know to build '$target' depended by '$self->{dst}'";
-            }
+            die "I don't know to build '$target' depended by '$self->{dst}'";
         }
     }
     return ($built, $need_rebuild);
