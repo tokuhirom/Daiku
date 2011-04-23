@@ -42,5 +42,8 @@ is(slurp('a.out'), "OBJ:b2\nOBJ:c1");
 my $c_o_mtime2 = stat('c.o')->mtime;
 is($c_o_mtime1, $c_o_mtime2, 'is not modified.');
 
+build('clean');
+ok(!-f $_, "$_ was unlinked.") for qw/b.o a.out c.o/;
+
 done_testing;
 
