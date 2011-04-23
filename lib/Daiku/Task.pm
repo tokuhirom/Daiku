@@ -7,6 +7,8 @@ package Daiku::Task;
 use File::stat;
 use Mouse;
 
+with 'Daiku::Role';
+
 has dst => (
     is       => 'rw',
     isa      => 'Str',

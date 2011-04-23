@@ -6,6 +6,8 @@ package Daiku::File;
 use File::stat;
 use Mouse;
 
+with 'Daiku::Role';
+
 has dst => (
     is       => 'rw',
     isa      => 'Str',

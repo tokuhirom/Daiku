@@ -6,6 +6,8 @@ use utf8;
 # like '.c.o' in Makefile.
 package Daiku::SuffixRule;
 use Mouse;
+with 'Daiku::Role';
+
 has src => (
     is       => 'ro',
     isa      => 'Str',
