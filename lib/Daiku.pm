@@ -4,7 +4,7 @@ use warnings FATAL => 'recursion';
 package Daiku;
 use 5.008001;
 our $VERSION = '0.01';
-use Daiku::Engine;
+use Daiku::Registry;
 
 sub import {
     my ($class) = @_;
@@ -13,7 +13,7 @@ sub import {
     *{"${pkg}::task"} = \&_task;
     *{"${pkg}::file"} = \&_file;
     *{"${pkg}::suffix_rule"} = \&_suffix_rule;
-    my $engine = Daiku::Engine->new();
+    my $engine = Daiku::Registry->new();
     *{"${pkg}::engine"} = sub { $engine };
     *{"${pkg}::build"} = sub { $engine->build(@_) };
 }

@@ -62,7 +62,7 @@ sub _build_deps {
 
     my $ret = 0;
     for my $target (@{$self->deps || []}) {
-        my $task = $Daiku::Engine::CONTEXT->find_task($target);
+        my $task = $Daiku::Registry::CONTEXT->find_task($target);
         if ($task) {
             $ret += $task->build($target);
         } else {

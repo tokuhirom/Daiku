@@ -6,7 +6,7 @@ use Daiku::Task;
 use Daiku::File;
 use Daiku::SuffixRule;
 
-package Daiku::Engine;
+package Daiku::Registry;
 use Mouse;
 
 has tasks => (
@@ -28,7 +28,7 @@ sub build {
         die "Missing target";
     }
 
-    local $Daiku::Engine::CONTEXT = $self;
+    local $Daiku::Registry::CONTEXT = $self;
 
     my $task = $self->find_task($target);
     if ($task) {
@@ -52,7 +52,7 @@ __END__
 
 =head1 NAME
 
-Daiku::Engine - Daiku's engine
+Daiku::Registry - Daiku's engine
 
 =head1 SYNOPSIS
 
@@ -90,13 +90,13 @@ This is a engine of Daiku. This module is a registrar of daiku.
 
 =over 4
 
-=item my $daiku = Daiku::Engine->new();
+=item my $daiku = Daiku::Registry->new();
 
-Create new instance of Daiku::Engine.
+Create new instance of Daiku::Registry.
 
 =item $daiku->register($task : Daiku::Task|Daiku::SuffixRule|Daiku::File) : void
 
-Register a task for Daiku::Engine.
+Register a task for Daiku::Registry.
 
 =item $daiku->build($target : Str) : void
 

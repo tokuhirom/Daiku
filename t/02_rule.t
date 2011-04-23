@@ -12,7 +12,7 @@ my $guard = tmpdir();
 
 my @ret;
 
-my $daiku = Daiku::Engine->new();
+my $daiku = Daiku::Registry->new();
 $daiku->register(
     Daiku::File->new(
         dst  => 'a.out',
