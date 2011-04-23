@@ -11,8 +11,6 @@ use Daiku;
 
 my $guard = tmpdir();
 
-my @ret;
-
 my $daiku = Daiku::Registry->new();
 $daiku->register(
     Daiku::File->new(
