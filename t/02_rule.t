@@ -13,14 +13,14 @@ my $guard = tmpdir();
 my @ret;
 
 my $daiku = Daiku::Engine->new();
-$daiku->add(
+$daiku->register(
     Daiku::File->new(
         dst  => 'a.out',
         deps => [qw/b.o c.o/],
         code => sub { link_( [qw/b.o c.o/], 'a.out' ) }
     )
 );
-$daiku->add(
+$daiku->register(
     Daiku::SuffixRule->new(
         src => '.c',
         dst => '.o',

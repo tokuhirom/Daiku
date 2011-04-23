@@ -17,7 +17,7 @@ has tasks => (
 
 our $CONTEXT;
 
-sub add {
+sub register {
     my ($self, $task) = (shift, shift);
     push @{$self->{tasks}}, $task;
 }
@@ -59,8 +59,8 @@ Daiku::Engine - Daiku's engine
 	use autodie;
 
     my $daiku = Daiku->new();
-    $daiku->add( Daiku::Task->new( dst => 'all', deps => [qw/a.out/] ) );
-    $daiku->add(
+    $daiku->register( Daiku::Task->new( dst => 'all', deps => [qw/a.out/] ) );
+    $daiku->register(
         Daiku::File->new(
             dst  => 'a.out',
             deps => [qw/b.o c.o/],
@@ -70,7 +70,7 @@ Daiku::Engine - Daiku's engine
             }
         )
     );
-    $daiku->add(
+    $daiku->register(
         Daiku::SuffixRule->new(
             src  => '.c',
             dst  => '.o',
@@ -94,7 +94,7 @@ This is a engine of Daiku. This module is a registrar of daiku.
 
 Create new instance of Daiku::Engine.
 
-=item $daiku->add($task : Daiku::Task|Daiku::SuffixRule|Daiku::File) : void
+=item $daiku->register($task : Daiku::Task|Daiku::SuffixRule|Daiku::File) : void
 
 Register a task for Daiku::Engine.
 

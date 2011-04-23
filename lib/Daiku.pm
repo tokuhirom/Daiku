@@ -25,7 +25,7 @@ sub _task($$;$) {
     $deps = [$deps] if !ref $deps;
     my $task = Daiku::Task->new( dst => $dst, deps => $deps );
     $task->code($code) if $code;
-    caller(0)->engine->add($task);
+    caller(0)->engine->register($task);
 }
 
 # file 'all' => ['a', 'b'];
@@ -36,7 +36,7 @@ sub _file($$;$) {
     $deps = [$deps] if !ref $deps;
     my $file = Daiku::File->new( dst => $dst, deps => $deps );
     $file->code($code) if $code;
-    caller(0)->engine->add($file);
+    caller(0)->engine->register($file);
 }
 
 # suffix_rule '.c' => '.o' => sub { ... };
@@ -45,7 +45,7 @@ sub _suffix_rule($$;$) {
     $deps = [$deps] if !ref $deps;
     my $suffix_rule = Daiku::SuffixRule->new( dst => $dst, deps => $deps );
     $suffix_rule->code($code) if $code;
-    caller(0)->engine->add($suffix_rule);
+    caller(0)->engine->register($suffix_rule);
 }
 
 
@@ -64,10 +64,10 @@ Daiku - Build system
     use Daiku;
 
     my $daiku = Daiku->new();
-    $daiku->add('foo' => [qw/foo.o/] => sub {
+    $daiku->register('foo' => [qw/foo.o/] => sub {
         system "gcc -c foo foo.o";
     });
-    $daiku->add('foo.o' => [qw/foo.c/] => sub {
+    $daiku->register('foo.o' => [qw/foo.c/] => sub {
         system "gcc -c foo.o foo.c";
     });
     $daiku->build("foo");

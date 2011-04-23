@@ -14,20 +14,20 @@ my $guard = tmpdir();
 my @ret;
 
 my $daiku = Daiku::Engine->new();
-$daiku->add(
+$daiku->register(
     Daiku::File->new(
         dst => 'a.out',
         deps   => [qw/b.o c.o/],
         code   => sub { link_([qw/b.o c.o/], 'a.out') }
     )
 );
-$daiku->add(
+$daiku->register(
     Daiku::File->new(
         dst => 'b.o',
         code   => sub { compile('b.c' => 'b.o') }
     )
 );
-$daiku->add(
+$daiku->register(
     Daiku::File->new(
         dst => 'c.o',
         deps   => [qw/c.c/],
