@@ -4,7 +4,8 @@ use warnings FATAL => 'recursion';
 package Daiku;
 use 5.008001;
 our $VERSION = '0.01';
-use Scalar::Util qw/blessed/;
+
+package Daiku::Engine;
 use Mouse;
 
 has tasks => (
@@ -26,7 +27,7 @@ sub build {
         die "Missing target";
     }
 
-    local $CONTEXT = $self;
+    local $Daiku::Engine::CONTEXT = $self;
 
     my $task = $self->find_task($target);
     if ($task) {
@@ -90,7 +91,7 @@ sub _build_deps {
 
     my $ret = 0;
     for my $target (@{$self->deps}) {
-        my $task = $Daiku::CONTEXT->find_task($target);
+        my $task = $Daiku::Engine::CONTEXT->find_task($target);
         if ($task) {
             $ret += $task->build($target);
         } else {
@@ -164,7 +165,7 @@ sub _build_deps {
 
     my $ret = 0;
     for my $target (@{$self->deps || []}) {
-        my $task = $Daiku::CONTEXT->find_task($target);
+        my $task = $Daiku::Engine::CONTEXT->find_task($target);
         if ($task) {
             $ret += $task->build($target);
         } else {

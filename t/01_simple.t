@@ -17,7 +17,7 @@ chdir($dir);
 
 my @ret;
 
-my $daiku = Daiku->new();
+my $daiku = Daiku::Engine->new();
 $daiku->add(
     Daiku::File->new(
         dst => 'a.out',
