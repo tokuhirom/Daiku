@@ -8,5 +8,15 @@ use Mouse::Role;
 requires 'build';
 requires 'match';
 
+sub clone {
+    my $self = shift;
+
+    my %args;
+    for my $attr ($self->meta->get_attribute_list) {
+        $args{$attr} = $self->$attr;
+    }
+    return $self->meta->name->new(%args);
+}
+
 1;
 
