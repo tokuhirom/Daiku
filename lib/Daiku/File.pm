@@ -31,7 +31,7 @@ sub build {
     my ($self) = @_;
 
     my $rebuild = $self->_build_deps();
-    $self->code->();
+    $self->code->($self);
     return $rebuild;
 }
 
