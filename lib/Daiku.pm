@@ -5,13 +5,15 @@ package Daiku;
 use 5.008001;
 our $VERSION = '0.01';
 use Scalar::Util qw/blessed/;
+use Mouse;
+
+has tasks => (
+    is => 'rw',
+    isa => 'ArrayRef',
+    default => sub { +[ ] },
+);
 
 our $CONTEXT;
-
-sub new {
-    my $class = shift;
-    bless { tasks => [], }, $class;
-}
 
 sub add {
     my ($self, $task) = (shift, shift);
@@ -42,25 +44,27 @@ sub find_task {
     return undef;
 }
 
+no Mouse; __PACKAGE__->meta->make_immutable;
+
 # This is .PHONY target.
 package Daiku::Task;
 use File::stat;
-use Class::Accessor::Lite 0.05 (
-    rw => [
-        qw(
-          target
-          deps
-          code
-          phoeny
-          )
-    ]
-);
+use Mouse;
 
-sub new {
-    my $class = shift;
-    my %args = @_==1 ? %{$_[0]} : @_;
-    return bless {%args}, $class;
-}
+has target => (
+    is => 'rw',
+    isa => 'Str',
+    required => 1,
+);
+has deps => (
+    is => 'rw',
+    isa => 'ArrayRef[Str]',
+);
+has code => (
+    is => 'rw',
+    isa => 'CodeRef',
+    default => sub { sub { } },
+);
 
 sub build {
     my ($self) = @_;
@@ -114,18 +118,27 @@ sub build_deps {
     }
     return !!$ret;
 }
+no Mouse;
+__PACKAGE__->meta->make_immutable;
 
 # Suffix Rule, same as Makefile.
 # like '.c.o' in Makefile.
 package Daiku::SuffixRule;
-
-use Class::Accessor::Lite 0.05 (
-    rw => [qw(
-        src
-        dst
-        code
-    )],
-    new => 1,
+use Mouse;
+has src => (
+    is       => 'ro',
+    isa      => 'Str',
+    required => 1,
+);
+has dst => (
+    is       => 'ro',
+    isa      => 'Str',
+    required => 1,
+);
+has code => (
+    is => 'ro',
+    isa => 'CodeRef',
+    default => sub { sub { } },
 );
 
 sub match {
@@ -139,6 +152,9 @@ sub build {
     (my $src = $target) =~ s/\Q$self->{dst}\E$/$self->{src}/;
     $self->code->($src, $target);
 }
+
+no Mouse;
+__PACKAGE__->meta->make_immutable;
 
 1;
 __END__
