@@ -29,6 +29,7 @@ has code => (
 
 sub build {
     my ($self) = @_;
+    $self->log("Building Task: $self->{dst}");
 
     my $rebuild = $self->_build_deps();
     if ($self->code) {

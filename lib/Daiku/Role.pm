@@ -18,5 +18,10 @@ sub clone {
     return $self->meta->name->new(%args);
 }
 
+sub log {
+    my ($class, @msg) = @_;
+    print "[LOG] @msg\n";
+}
+
 1;
 

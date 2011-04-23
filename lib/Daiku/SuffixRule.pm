@@ -34,6 +34,7 @@ sub match {
 
 sub build {
     my ($self, $target) = @_;
+    $self->log("Building SuffixRule: $target");
     (my $src = $target) =~ s/\Q$self->{dst}\E$/$self->{src}/;
     $self->code->($src, $target);
 }
