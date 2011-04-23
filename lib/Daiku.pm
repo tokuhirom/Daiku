@@ -20,31 +20,42 @@ sub import {
 
 # task 'all' => ['a', 'b'];
 # task 'all' => ['a', 'b'] => sub { ... };
-sub _task($$;$) {
-    my ($dst, $deps, $code) = @_;
-    $deps = [$deps] if !ref $deps;
-    my $task = Daiku::Task->new( dst => $dst, deps => $deps );
-    $task->code($code) if $code;
+sub _task($$;&) {
+    my %args;
+    $args{dst} = shift @_;
+    if (ref($_[-1]) eq 'CODE') {
+        $args{code} = pop @_;
+    }
+    if (@_) {
+        $args{deps} = shift @_;
+        $args{deps} = [$args{deps}] if !ref $args{deps};
+    }
+    my $task = Daiku::Task->new( %args );
     caller(0)->engine->register($task);
 }
 
 # file 'all' => ['a', 'b'];
 # file 'all' => 'a';
 # file 'all' => ['a', 'b'] => sub { ... };
-sub _file($$;$) {
-    my ($dst, $deps, $code) = @_;
-    $deps = [$deps] if !ref $deps;
-    my $file = Daiku::File->new( dst => $dst, deps => $deps );
-    $file->code($code) if $code;
+sub _file($$;&) {
+    my %args;
+    $args{dst} = shift @_;
+    if (ref($_[-1]) eq 'CODE') {
+        $args{code} = pop @_;
+    }
+    if (@_) {
+        $args{deps} = shift @_;
+        $args{deps} = [$args{deps}] if !ref $args{deps};
+    }
+    my $file = Daiku::File->new( %args );
     caller(0)->engine->register($file);
 }
 
 # suffix_rule '.c' => '.o' => sub { ... };
-sub _suffix_rule($$;$) {
-    my ($dst, $deps, $code) = @_;
-    $deps = [$deps] if !ref $deps;
-    my $suffix_rule = Daiku::SuffixRule->new( dst => $dst, deps => $deps );
-    $suffix_rule->code($code) if $code;
+sub _suffix_rule($$&) {
+    my %args;
+    @args{qw/dst src code/} = @_;
+    my $suffix_rule = Daiku::SuffixRule->new( %args );
     caller(0)->engine->register($suffix_rule);
 }
 

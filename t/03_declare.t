@@ -12,7 +12,7 @@ my $tmpdir = tmpdir();
 
 task 'all' => 'a.out';
 
-task 'clean' => [], sub {
+task 'clean', sub {
 	unlink $_ for qw/b.o a.out c.o/;
 };
 
