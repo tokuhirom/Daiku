@@ -15,11 +15,10 @@ has tasks => (
     default => sub { +[ ] },
 );
 
-our $CONTEXT;
-
 sub register {
     my ($self, $task) = (shift, shift);
     push @{$self->{tasks}}, $task;
+    $task->registry($self);
 }
 
 sub build {
@@ -27,8 +26,6 @@ sub build {
     if (!defined $target) {
         die "Missing target";
     }
-
-    local $Daiku::Registry::CONTEXT = $self;
 
     my $task = $self->find_task($target);
     if ($task) {

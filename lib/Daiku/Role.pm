@@ -8,6 +8,12 @@ use Mouse::Role;
 requires 'build';
 requires 'match';
 
+has registry => (
+    is       => 'rw',
+    isa      => 'Maybe[Daiku::Registry]',
+    weak_ref => 1,
+);
+
 sub clone {
     my $self = shift;
 
