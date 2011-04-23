@@ -51,19 +51,21 @@ package Daiku::Task;
 use File::stat;
 use Mouse;
 
-has target => (
-    is => 'rw',
-    isa => 'Str',
+has dst => (
+    is       => 'rw',
+    isa      => 'Str',
     required => 1,
 );
 has deps => (
-    is => 'rw',
+    is  => 'rw',
     isa => 'ArrayRef[Str]',
 );
 has code => (
-    is => 'rw',
-    isa => 'CodeRef',
-    default => sub { sub { } },
+    is      => 'rw',
+    isa     => 'CodeRef',
+    default => sub {
+        sub { }
+    },
 );
 
 sub build {
@@ -78,15 +80,78 @@ sub build {
 
 sub match {
     my ($self, $target) = @_;
-    return 1 if $self->{target} eq $target;
+    return 1 if $self->dst eq $target;
+    return 0;
+}
+
+# @return need rebuild
+sub _build_deps {
+    my ($self) = @_;
+
+    my $ret = 0;
+    for my $target (@{$self->deps}) {
+        my $task = $Daiku::CONTEXT->find_task($target);
+        if ($task) {
+            $ret += $task->build($target);
+        } else {
+            if (-f $target) {
+                $ret += 1;
+            } else {
+                die "I don't know to build '$target' depended by '$self->{dst}'";
+            }
+        }
+    }
+    return !!$ret;
+}
+
+no Mouse;
+__PACKAGE__->meta->make_immutable;
+
+package Daiku::File;
+use File::stat;
+use Mouse;
+
+has dst => (
+    is       => 'ro',
+    isa      => 'Str',
+    required => 1,
+);
+
+has deps => (
+    is       => 'ro',
+    isa      => 'ArrayRef[Str]',
+    required => 1,
+    default  => sub { +[] },
+);
+
+has code => (
+    is      => 'ro',
+    isa     => 'CodeRef',
+    default => sub {
+        sub { }
+    },
+);
+
+sub build {
+    my ($self) = @_;
+
+    my $rebuild = $self->_build_deps();
+    $self->code->();
+    return $rebuild;
+}
+
+sub match {
+    my ($self, $target) = @_;
+    return 1 if $self->dst eq $target;
     return 0;
 }
 
 sub _mtime {
     my $self = shift;
+
     if (!exists $self->{mtime}) {
         $self->{mtime} = do {
-            my $stat = stat($self->target);
+            my $stat = stat($self->dst);
             $stat ? $stat->mtime : undef;
         };
     }
@@ -107,6 +172,7 @@ sub _build_deps {
                 $ret += sub {
                     my $m1 = stat($target)->mtime;
                     my $m2 = $self->_mtime;
+
                     return 1 unless $m2;
                     return 1 if $m2 < $m1;
                     return 0;
@@ -119,8 +185,7 @@ sub _build_deps {
     return !!$ret;
 }
 
-no Mouse;
-__PACKAGE__->meta->make_immutable;
+no Mouse; __PACKAGE__->meta->make_immutable;
 
 # Suffix Rule, same as Makefile.
 # like '.c.o' in Makefile.
@@ -137,9 +202,11 @@ has dst => (
     required => 1,
 );
 has code => (
-    is => 'ro',
-    isa => 'CodeRef',
-    default => sub { sub { } },
+    is      => 'ro',
+    isa     => 'CodeRef',
+    default => sub {
+        sub { }
+    },
 );
 
 sub match {

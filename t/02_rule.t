@@ -19,10 +19,10 @@ my @ret;
 
 my $daiku = Daiku->new();
 $daiku->add(
-    Daiku::Task->new(
-        target => 'a.out',
-        deps   => [qw/b.o c.o/],
-        code   => sub { link_([qw/b.o c.o/], 'a.out') }
+    Daiku::File->new(
+        dst  => 'a.out',
+        deps => [qw/b.o c.o/],
+        code => sub { link_( [qw/b.o c.o/], 'a.out' ) }
     )
 );
 $daiku->add(
