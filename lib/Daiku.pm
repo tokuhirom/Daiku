@@ -12,7 +12,7 @@ sub import {
     no strict 'refs';
     *{"${pkg}::task"} = \&_task;
     *{"${pkg}::file"} = \&_file;
-    *{"${pkg}::suffix_rule"} = \&_suffix_rule;
+    *{"${pkg}::rule"} = \&_rule;
     my $engine = Daiku::Registry->new();
     *{"${pkg}::engine"} = sub { $engine };
     *{"${pkg}::build"} = sub { $engine->build(@_) };
@@ -51,12 +51,12 @@ sub _file($$;&) {
     caller(0)->engine->register($file);
 }
 
-# suffix_rule '.c' => '.o' => sub { ... };
-sub _suffix_rule($$&) {
+# rule '.c' => '.o' => sub { ... };
+sub _rule($$&) {
     my %args;
     @args{qw/dst src code/} = @_;
-    my $suffix_rule = Daiku::SuffixRule->new( %args );
-    caller(0)->engine->register($suffix_rule);
+    my $rule = Daiku::SuffixRule->new( %args );
+    caller(0)->engine->register($rule);
 }
 
 
@@ -80,7 +80,7 @@ Daiku - Make for Perl
     file 'foo' => 'foo.o' => sub {
         system "gcc -c foo foo.o";
     };
-    suffix_rule '.o' => '.c' => sub {
+    rule '.o' => '.c' => sub {
         system "gcc -c foo.o foo.c";
     };
 
@@ -110,7 +110,7 @@ Register .PHONY task to registrar.
 
 Register a file creation rule.
 
-=item suffix_rule $dst:Str, $src:Str, \&callback:CodeRef
+=item rule $dst:Str, $src:Str, \&callback:CodeRef
 
 Register a suffix rule. It's same as following code on Make.
 

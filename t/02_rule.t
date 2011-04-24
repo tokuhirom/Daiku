@@ -13,7 +13,7 @@ my $guard = tmpdir();
 file 'a.out' => [qw/b.o c.o/] => sub {
 	link_( [qw/b.o c.o/], 'a.out' )
 };
-suffix_rule '.o' => '.c' => sub {
+rule '.o' => '.c' => sub {
 	my ($src, $dst) = @_;
 	note "Compiling: $src => $dst";
 	compile($src => $dst)
