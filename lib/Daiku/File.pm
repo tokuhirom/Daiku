@@ -18,7 +18,6 @@ has dst => (
 has deps => (
     is       => 'rw',
     isa      => 'ArrayRef[Str]',
-    required => 1,
     default  => sub { +[] },
 );
 
@@ -101,9 +100,37 @@ Daiku::File - file creation rule
 
 This is a file creation rule object for Daiku
 
+=head1 ATTRIBUTES
+
+=over 4
+
+=item dst:Str
+
+Destination file name
+
+=item deps:ArrayRef[Str]
+
+This is a dependency file names.
+
+=item code:CodeRef
+
+This is a callback function.
+
 =head1 METHODS
 
 =over 4
+
+=item my $file = Daiku::File->new(%args);
+
+Create a new instance of Daiku::File.
+
+=item $file->build();
+
+Build the target.
+
+I<Return Value>: The number of built jobs.
+
+=item $file->match($name) :Bool
 
 =back
 

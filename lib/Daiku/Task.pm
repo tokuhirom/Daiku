@@ -66,4 +66,13 @@ no Mouse;
 __PACKAGE__->meta->make_immutable;
 
 1;
+__END__
+
+=head1 NAME
+
+Daiku::Task - Task
+
+=head1 DESCRIPTION
+
+This is a .PHONY task object.
 
