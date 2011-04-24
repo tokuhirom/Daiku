@@ -91,4 +91,19 @@ sub _mtime {
 no Mouse; __PACKAGE__->meta->make_immutable;
 
 1;
+__END__
+
+=head1 NAME
+
+Daiku::File - file creation rule
+
+=head1 DESCRIPTION
+
+This is a file creation rule object for Daiku
+
+=head1 METHODS
+
+=over 4
+
+=back
 

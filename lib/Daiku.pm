@@ -68,28 +68,62 @@ __END__
 
 =head1 NAME
 
-Daiku - Build system
+Daiku - Make for Perl
 
 =head1 SYNOPSIS
 
+    #! perl
     use Daiku;
+    use autodie ':all';
 
-    my $daiku = Daiku->new();
-    $daiku->register('foo' => [qw/foo.o/] => sub {
+    task 'all' => 'foo';
+    file 'foo' => 'foo.o' => sub {
         system "gcc -c foo foo.o";
-    });
-    $daiku->register('foo.o' => [qw/foo.c/] => sub {
+    };
+    suffix_rule '.o' => '.c' => sub {
         system "gcc -c foo.o foo.c";
-    });
-    $daiku->build("foo");
+    };
+
+    build shift @ARGV || 'all';
 
 =head1 DESCRIPTION
 
-Daiku is
+Daiku is yet another build system for Perl5.
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item task $name:Str, \@deps:ArrayRef[Str]
+
+=item task $name:Str, \@deps:ArrayRef[Str], \&callback
+
+=item task $name:Str, $deps:Str
+
+=item task $name:Str, $deps:Str, \&callback
+
+Register .PHONY task to registrar.
+
+=item file $name, $deps:Str, \&code
+
+=item file $name, \@deps:ArrayRef[Str], \&code
+
+Register a file creation rule.
+
+=item suffix_rule $dst:Str, $src:Str, \&callback:CodeRef
+
+Register a suffix rule. It's same as following code on Make.
+
+    .c.o:
+        cc -c $<
+
+=item build $task : Str
+
+Build one object named $task.
+
+=back
 
 =head1 NOTE
-
-This module is a software build system like Rake.
 
 This module doesn't detect recursion, but Perl5 can detect it.
 
@@ -98,6 +132,8 @@ This module doesn't detect recursion, but Perl5 can detect it.
 Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF GMAIL COME<gt>
 
 =head1 SEE ALSO
+
+L<Rake|http://rake.rubyforge.org/>, L<make(1)>
 
 =head1 LICENSE
 
