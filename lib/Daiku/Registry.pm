@@ -11,13 +11,15 @@ use Mouse;
 
 has tasks => (
     is => 'rw',
-    isa => 'ArrayRef',
-    default => sub { +[ ] },
+    isa => 'HashRef',
+    default => sub { +{ } },
 );
 
 sub register {
     my ($self, $task) = (shift, shift);
-    push @{$self->{tasks}}, $task;
+    my $orig = $self->find_task($task->dst);
+    $task->merge($orig) if $orig;
+    $self->tasks->{$task->dst} = $task;
     $task->registry($self);
 }
 
@@ -37,7 +39,7 @@ sub build {
 
 sub find_task {
     my ($self, $target) = @_;
-    for my $task (@{$self->{tasks}}) {
+    for my $task (values %{$self->{tasks}}) {
         return $task if $task->match($target);
     }
     if ( -f $target ) {

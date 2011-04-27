@@ -4,6 +4,8 @@ use utf8;
 
 package Daiku::Role;
 use Mouse::Role;
+use Scalar::Util qw/blessed/;
+use Carp ();
 
 requires 'build';
 requires 'match';
@@ -32,6 +34,26 @@ sub log {
 sub debug {
     my ($class, @msg) = @_;
     print "[LOG][DBG] @msg\n" if $ENV{DAIKU_DEBUG};
+}
+
+sub merge {
+    my ($self, $task) = @_;
+    return unless $task;
+
+    Carp::croak("Cannot merge defferent type task: $task")
+      if blessed($self) ne blessed($task);
+
+    if ($self->can('deps')) {
+        unshift @{$self->deps}, @{$task->deps};
+    }
+
+    my $code = $self->code();
+    my $orig_code = $self->code();
+    my $other_code = $task->code();
+    $self->code(sub {
+        $other_code->();
+        $orig_code->();
+    });
 }
 
 1;
