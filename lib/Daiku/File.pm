@@ -116,6 +116,8 @@ This is a dependency file names.
 
 This is a callback function.
 
+=back
+
 =head1 METHODS
 
 =over 4
