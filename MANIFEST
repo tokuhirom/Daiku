@@ -26,6 +26,7 @@ t/02_rule.t
 t/03_declare.t
 t/04_file.t
 t/05_clone.t
+t/06_chain.t
 t/07_suffix_deps.t
 t/Util.pm
 xt/01_podspell.t
