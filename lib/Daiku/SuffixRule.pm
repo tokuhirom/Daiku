@@ -49,7 +49,7 @@ sub build {
 	}->();
 	if ($need_rebuild) {
         $self->log("  Building rule: $target");
-		$self->code->($src, $target);
+		$self->code->($self, $target, $src);
 		return 1;
 	} else {
         $self->log("  nop rule: $target");
