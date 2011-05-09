@@ -1,5 +1,9 @@
 Revision history for Perl extension Daiku
 
+0.03
+
+    - fixed deps
+
 0.02
 
     - merge additional deps and code.
