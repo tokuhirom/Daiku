@@ -24,6 +24,7 @@ write_file("c.c", "c1");
 write_file("b.c", "b1");
 
 is(build('a.out'), 3);
+ok -f 'c.o', 'generated c.o';
 my $c_o_mtime1 = stat('c.o')->mtime;
 is(slurp('a.out'), "OBJ:b1\nOBJ:c1");
 write_file("b.c", "b2"); touch(1, 'b.c');
