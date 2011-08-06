@@ -3,7 +3,7 @@ use warnings FATAL => 'recursion';
 
 package Daiku;
 use 5.008001;
-our $VERSION = '0.02';
+our $VERSION = '0.04';
 use Daiku::Registry;
 
 sub import {
