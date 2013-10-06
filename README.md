@@ -24,26 +24,26 @@ Daiku is yet another build system for Perl5.
 
 # FUNCTIONS
 
-- task $name:Str, \\@deps:ArrayRef\[Str\]
-- task $name:Str, \\@deps:ArrayRef\[Str\], \\&callback
-- task $name:Str, $deps:Str
-- task $name:Str, $deps:Str, \\&callback
+- `task $name:Str, \@deps:ArrayRef[Str]`
+- `task $name:Str, \@deps:ArrayRef[Str], \&callback`
+- `task $name:Str, $deps:Str`
+- `task $name:Str, $deps:Str, \&callback`
 
     Register .PHONY task to registrar.
 
-- file $name, $deps:Str, \\&code
-- file $name, \\@deps:ArrayRef\[Str\], \\&code
+- `file $name, $deps:Str, \&code`
+- `file $name, \@deps:ArrayRef[Str], \&code`
 
     Register a file creation rule.
 
-- rule $dst:Str, $src:Str, \\&callback:CodeRef
+- `rule $dst:Str, $src:Str, \&callback:CodeRef`
 
     Register a suffix rule. It's same as following code on Make.
 
         .c.o:
             cc -c $<
 
-- build $task : Str
+- `build $task : Str`
 
     Build one object named $task.
 

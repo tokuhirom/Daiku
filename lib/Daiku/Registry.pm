@@ -86,21 +86,21 @@ Daiku::Registry - Daiku's engine
 
 =head1 DESCRIPTION
 
-This is a engine of Daiku. This module is a registrar of daiku.
+This is a engine of Daiku. This module is a registrar of Daiku.
 
 =head1 METHODS
 
 =over 4
 
-=item my $daiku = Daiku::Registry->new();
+=item C<< my $daiku = Daiku::Registry->new(); >>
 
 Create new instance of Daiku::Registry.
 
-=item $daiku->register($task : Daiku::Task|Daiku::SuffixRule|Daiku::File) : void
+=item C<< $daiku->register($task : Daiku::Task|Daiku::SuffixRule|Daiku::File) : void >>
 
 Register a task for Daiku::Registry.
 
-=item $daiku->build($target : Str) : void
+=item C<< $daiku->build($target : Str) : void >>
 
 Build a C<< $target >>.
 

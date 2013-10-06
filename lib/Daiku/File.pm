@@ -104,15 +104,15 @@ This is a file creation rule object for Daiku
 
 =over 4
 
-=item dst:Str
+=item C<< dst:Str >>
 
 Destination file name
 
-=item deps:ArrayRef[Str]
+=item C<< deps:ArrayRef[Str] >>
 
 This is a dependency file names.
 
-=item code:CodeRef
+=item C<< code:CodeRef >>
 
 This is a callback function.
 
@@ -122,17 +122,17 @@ This is a callback function.
 
 =over 4
 
-=item my $file = Daiku::File->new(%args);
+=item C<< my $file = Daiku::File->new(%args); >>
 
 Create a new instance of Daiku::File.
 
-=item $file->build();
+=item C<< $file->build(); >>
 
 Build the target.
 
 I<Return Value>: The number of built jobs.
 
-=item $file->match($name) :Bool
+=item C<< $file->match($name) :Bool >>
 
 =back
 

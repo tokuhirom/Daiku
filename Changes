@@ -1,5 +1,13 @@
 Revision history for Perl module Daiku
 
+{{$NEXT}}
+
+0.05 2013-10-06T23:49:23Z
+
+    - Migrate with Minilla
+    - Fixed Changes Spec
+      (neilb)
+
 0.04 2011-08-05
 
     - added better error detection code for fucking win32 hell.

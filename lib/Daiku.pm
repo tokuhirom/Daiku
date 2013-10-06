@@ -3,7 +3,7 @@ use warnings FATAL => 'recursion';
 
 package Daiku;
 use 5.008001;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 use Daiku::Registry;
 
 sub import {
@@ -94,30 +94,30 @@ Daiku is yet another build system for Perl5.
 
 =over 4
 
-=item task $name:Str, \@deps:ArrayRef[Str]
+=item C<< task $name:Str, \@deps:ArrayRef[Str] >>
 
-=item task $name:Str, \@deps:ArrayRef[Str], \&callback
+=item C<< task $name:Str, \@deps:ArrayRef[Str], \&callback >>
 
-=item task $name:Str, $deps:Str
+=item C<< task $name:Str, $deps:Str >>
 
-=item task $name:Str, $deps:Str, \&callback
+=item C<< task $name:Str, $deps:Str, \&callback >>
 
 Register .PHONY task to registrar.
 
-=item file $name, $deps:Str, \&code
+=item C<< file $name, $deps:Str, \&code >>
 
-=item file $name, \@deps:ArrayRef[Str], \&code
+=item C<< file $name, \@deps:ArrayRef[Str], \&code >>
 
 Register a file creation rule.
 
-=item rule $dst:Str, $src:Str, \&callback:CodeRef
+=item C<< rule $dst:Str, $src:Str, \&callback:CodeRef >>
 
 Register a suffix rule. It's same as following code on Make.
 
     .c.o:
         cc -c $<
 
-=item build $task : Str
+=item C<< build $task : Str >>
 
 Build one object named $task.
 

@@ -25,12 +25,6 @@
       ]
    },
    "prereqs" : {
-      "build" : {
-         "requires" : {
-            "ExtUtils::MakeMaker" : "6.59",
-            "Test::More" : "0.96"
-         }
-      },
       "configure" : {
          "requires" : {
             "CPAN::Meta" : "0",
@@ -49,9 +43,18 @@
       "runtime" : {
          "requires" : {
             "Mouse" : "0.92",
+            "Mouse::Role" : "0",
+            "Scalar::Util" : "0",
             "Time::HiRes" : "1.9701",
             "parent" : "0",
             "perl" : "5.008001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Fatal" : "0",
+            "File::Temp" : "0",
+            "Test::More" : "0.98"
          }
       }
    },
@@ -67,7 +70,7 @@
          "web" : "https://github.com/tokuhirom/Daiku"
       }
    },
-   "version" : "0.04",
+   "version" : "0.05",
    "x_contributors" : [
       "tokuhirom <tokuhirom@gmail.com>"
    ]
