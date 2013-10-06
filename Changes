@@ -1,16 +1,18 @@
-Revision history for Perl extension Daiku
+Revision history for Perl module Daiku
 
-0.04
+0.04 2011-08-05
 
     - added better error detection code for fucking win32 hell.
 
-0.03
+0.03 2011-05-08
 
     - fixed deps
 
-0.02
+0.02 2011-04-27
 
     - merge additional deps and code.
 
-0.01    Fri Apr 22 09:37:19 2011
-        - original version
+0.01 2011-04-23
+
+    - original version
+
