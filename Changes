@@ -2,6 +2,11 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+0.06 2014-03-09T13:54:34Z
+
+    - Added daiku command
+      (Shoichi Kaji)
+
 0.05 2013-10-06T23:49:23Z
 
     - Migrate with Minilla
