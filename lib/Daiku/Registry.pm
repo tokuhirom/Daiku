@@ -5,6 +5,7 @@ use utf8;
 use Daiku::Task;
 use Daiku::File;
 use Daiku::SuffixRule;
+use Tie::IxHash;
 
 package Daiku::Registry;
 use Mouse;
@@ -12,7 +13,7 @@ use Mouse;
 has tasks => (
     is => 'rw',
     isa => 'HashRef',
-    default => sub { +{ } },
+    default => sub { tie my %h, "Tie::IxHash"; \%h },
 );
 
 sub register {
@@ -46,6 +47,12 @@ sub find_task {
         return Daiku::File->new( dst => $target );
     }
     return undef;
+}
+
+sub first_target {
+    my $self = shift;
+    my ($target) = keys %{$self->{tasks}};
+    return $target;
 }
 
 no Mouse; __PACKAGE__->meta->make_immutable;
