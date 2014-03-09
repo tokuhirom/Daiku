@@ -1,0 +1,76 @@
+#!perl
+use strict;
+use warnings;
+use Daiku::CLI;
+exit Daiku::CLI->new->run(@ARGV);
+
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+daiku - make(1) for Perl
+
+=head1 SYNOPSIS
+
+    > cat Daikufile
+    task 'all' => 'foo';
+    file 'foo' => 'foo.o' => sub {
+        system "gcc -o foo foo.o";
+    };
+    rule '.o' => '.c' => sub {
+        my ($engine, $dist, $src) = @_;
+        system "gcc -c $src -o $dist";
+    };
+
+    > daiku all
+    [LOG] Building Task: all
+    [LOG] Processing file: foo
+    [LOG] Building SuffixRule: foo.o
+    [LOG]   Building rule: foo.o
+    [LOG]   Building file: foo(0)
+
+=head1 ARGUMENTS
+
+target
+
+=head1 OPTIONS
+
+=over 4
+
+=item -f, --file
+
+Use specifiled file as Daikufile.
+
+=item -C, --direcotry
+
+Change to specified directory before reading the Daikufile or doing anything else.
+
+=item -h, --help
+
+Show this help message.
+
+=item -v, --version
+
+Show Daiku version.
+
+=back
+
+=head1 SEE ALSO
+
+make(1), rake(1)
+
+=head1 AUTHOR
+
+Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF GMAIL COME<gt>
+
+=head1 LICENSE
+
+Copyright (C) Tokuhiro Matsuno
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
+

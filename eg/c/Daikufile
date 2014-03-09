@@ -1,0 +1,14 @@
+task 'all' => 'foo';
+
+rule '.o' => '.c' => sub {
+    my ($engine, $dist, $src) = @_;
+    system "gcc -c $src -o $dist";
+};
+
+file 'foo' => 'foo.o' => sub {
+    system "gcc -o foo foo.o";
+};
+
+task clean => sub {
+    system "rm -vf *.o foo";
+};
