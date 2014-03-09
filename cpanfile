@@ -7,6 +7,7 @@ requires 'Time::HiRes', '1.9701';
 requires 'parent';
 requires 'IPC::System::Simple';
 requires 'Tie::IxHash';
+requires 'autodie';
 
 on test => sub {
     requires 'Fatal';

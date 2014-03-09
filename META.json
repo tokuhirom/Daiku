@@ -49,6 +49,7 @@
             "Scalar::Util" : "0",
             "Tie::IxHash" : "0",
             "Time::HiRes" : "1.9701",
+            "autodie" : "0",
             "parent" : "0",
             "perl" : "5.008001"
          }
