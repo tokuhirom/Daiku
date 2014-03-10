@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom AAJKLFJEF GMAIL COM>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.11.1, CPAN::Meta::Converter version 2.133380",
+   "generated_by" : "Minilla/v0.11.0, CPAN::Meta::Converter version 2.133380",
    "license" : [
       "perl_5"
    ],
@@ -43,9 +43,11 @@
       },
       "runtime" : {
          "requires" : {
+            "Getopt::Long" : "2.38",
             "IPC::System::Simple" : "0",
             "Mouse" : "0.92",
             "Mouse::Role" : "0",
+            "Pod::Usage" : "0",
             "Scalar::Util" : "0",
             "Tie::IxHash" : "0",
             "Time::HiRes" : "1.9701",

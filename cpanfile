@@ -8,6 +8,8 @@ requires 'parent';
 requires 'IPC::System::Simple';
 requires 'Tie::IxHash';
 requires 'autodie';
+requires 'Getopt::Long', '2.38';
+requires 'Pod::Usage';
 
 on test => sub {
     requires 'Fatal';
