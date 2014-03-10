@@ -2,6 +2,11 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+0.07 2014-03-10T00:32:43Z
+
+    - Fixed dependency issue.
+      (tokuhirom)
+
 0.06 2014-03-09T13:54:34Z
 
     - Added daiku command
