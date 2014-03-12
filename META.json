@@ -43,7 +43,7 @@
       },
       "runtime" : {
          "requires" : {
-            "Getopt::Long" : "2.38",
+            "Getopt::Long" : "2.39",
             "IPC::System::Simple" : "0",
             "Mouse" : "0.92",
             "Mouse::Role" : "0",
@@ -76,7 +76,7 @@
          "web" : "https://github.com/tokuhirom/Daiku"
       }
    },
-   "version" : "0.07",
+   "version" : "0.08",
    "x_contributors" : [
       "Shoichi Kaji <skaji@cpan.org>",
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"

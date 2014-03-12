@@ -2,6 +2,11 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+0.08 2014-03-12T20:38:25Z
+
+    - daiku command requires Getopt::Long 2.39+
+      (tokuhirom)
+
 0.07 2014-03-10T00:32:43Z
 
     - Fixed dependency issue.
