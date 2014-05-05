@@ -26,6 +26,10 @@ has code => (
         sub { }
     },
 );
+has desc => (
+    is  => 'ro',
+    isa => 'Maybe[Str]',
+);
 
 # @return affected things
 sub build {
