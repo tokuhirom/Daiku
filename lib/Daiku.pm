@@ -5,6 +5,7 @@ package Daiku;
 use 5.008001;
 our $VERSION = '0.08';
 use Daiku::Registry;
+use IPC::System::Simple ();
 
 sub import {
     my ($class) = @_;
@@ -13,6 +14,7 @@ sub import {
     *{"${pkg}::task"} = \&_task;
     *{"${pkg}::file"} = \&_file;
     *{"${pkg}::rule"} = \&_rule;
+    *{"${pkg}::sh"}   = \&IPC::System::Simple::run;
     my $engine = Daiku::Registry->new();
     *{"${pkg}::engine"} = sub { $engine };
     *{"${pkg}::build"} = sub { $engine->build(@_) };
