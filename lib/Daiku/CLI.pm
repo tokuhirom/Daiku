@@ -25,6 +25,7 @@ sub run {
         "C|directory=s" => \(my $directory),
         "h|help"        => \(my $help),
         "v|version"     => \(my $version),
+        "T|tasks"       => \(my $tasks),
     );
     if ($version) {
         require Daiku;
@@ -44,6 +45,12 @@ sub run {
     }
 
     my $engine = Daiku::Daikufile->parse($self->file);
+
+    if ($tasks) {
+        _print_tasks($engine->tasks);
+        return 0;
+    }
+
     if (!@target) {
         my $first_target = $engine->first_target
             or die "Missing target.\n";
@@ -59,6 +66,28 @@ sub run {
         }
     }
     return $exit;
+}
+
+sub _print_tasks {
+    my $tasks = shift;
+    my $column_width = 1;
+
+    my @tasks;
+    for my $task (values %$tasks) {
+        next unless defined $task->desc;
+
+        my $task_name = $task->dst;
+        my $len = length $task_name;
+        $column_width = $len if $column_width < $len;
+        push @tasks, {
+            name => $task_name,
+            desc => $task->desc,
+        };
+    }
+
+    for my $t (@tasks) {
+        printf "daiku %-${column_width}s  # %s\n", $t->{name}, $t->{desc};
+    }
 }
 
 no Mouse; __PACKAGE__->meta->make_immutable;

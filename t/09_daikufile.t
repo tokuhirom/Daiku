@@ -3,6 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use t::Util;
+use Capture::Tiny qw/capture_stdout/;
 
 use Daiku::CLI;
 
@@ -28,6 +29,30 @@ subtest "specify directory" => sub {
     write_file("temp/Daikufile", "file 'hoge' => 'foo' => sub {}");
     my $exit = Daiku::CLI->new->run("-C", "temp", "hoge");
     is $exit, 0;
+};
+
+subtest "display tasks" => sub {
+    my $guard = tmpdir();
+    write_file("Daikufile", <<'...');
+desc 'foo';
+task 'footask' => sub {};
+
+task 'bartask' => sub {};
+
+desc 'baz';
+task 'bazz' => sub {};
+...
+
+    my $stdout = capture_stdout {
+        my $exit = Daiku::CLI->new->run("-T");
+        is $exit, 0;
+    };
+
+    is $stdout, <<'...';
+daiku footask  # foo
+daiku bazz     # baz
+...
+
 };
 
 done_testing;
