@@ -74,7 +74,7 @@ sub _print_tasks {
 
     my @tasks;
     for my $task (values %$tasks) {
-        next unless defined $task->desc;
+        next unless $task->isa('Daiku::Task') && defined $task->desc;
 
         my $task_name = $task->dst;
         my $len = length $task_name;
