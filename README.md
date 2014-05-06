@@ -8,6 +8,7 @@ Daiku - Make for Perl
     use Daiku;
     use autodie ':all';
 
+    desc 'do all tasks';
     task 'all' => 'foo';
     file 'foo' => 'foo.o' => sub {
         system "gcc -c foo foo.o";
@@ -23,6 +24,10 @@ Daiku - Make for Perl
 Daiku is yet another build system for Perl5.
 
 # FUNCTIONS
+
+- `desc $desc:Str`
+
+    Description of following task.
 
 - `task $name:Str, \@deps:ArrayRef[Str]`
 - `task $name:Str, \@deps:ArrayRef[Str], \&callback`
