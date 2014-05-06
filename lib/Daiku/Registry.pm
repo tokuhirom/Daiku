@@ -5,6 +5,8 @@ use utf8;
 use Daiku::Task;
 use Daiku::File;
 use Daiku::SuffixRule;
+
+use Parse::CommandLine ();
 use Tie::IxHash;
 
 package Daiku::Registry;
@@ -36,9 +38,14 @@ sub build {
         die "Missing target";
     }
 
+    # parsing 'task_name[arg1 arg2]'
+    ($target, my $argument) = $target =~ /\A([^\[]+)(?:\[(.*)\])?\z/ms;
+    my @args;
+       @args = Parse::CommandLine::parse_command_line($argument) if defined $argument;
+
     my $task = $self->find_task($target);
     if ($task) {
-        return $task->build($target);
+        return $task->build($target, @args);
     } else {
         die "There is no rule to build '$target'";
     }
@@ -71,7 +78,7 @@ Daiku::Registry - Daiku's engine
 
 =head1 SYNOPSIS
 
-	use autodie;
+    use autodie;
 
     my $daiku = Daiku->new();
     $daiku->register( Daiku::Task->new( dst => 'all', deps => [qw/a.out/] ) );
