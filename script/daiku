@@ -55,6 +55,10 @@ Show this help message.
 
 Show Daiku version.
 
+=item -T, --tasks
+
+Display tasks.
+
 =back
 
 =head1 SEE ALSO

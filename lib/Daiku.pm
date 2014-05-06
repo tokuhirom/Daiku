@@ -11,6 +11,7 @@ sub import {
     my ($class) = @_;
     my $pkg = caller(0);
     no strict 'refs';
+    *{"${pkg}::desc"} = \&_desc;
     *{"${pkg}::task"} = \&_task;
     *{"${pkg}::file"} = \&_file;
     *{"${pkg}::rule"} = \&_rule;
@@ -18,6 +19,12 @@ sub import {
     my $engine = Daiku::Registry->new();
     *{"${pkg}::engine"} = sub { $engine };
     *{"${pkg}::build"} = sub { $engine->build(@_) };
+}
+
+sub _desc($) {
+    my $desc = shift;
+
+    caller(0)->engine->temporary_desc($desc);
 }
 
 # task 'all' => ['a', 'b'];
@@ -32,8 +39,14 @@ sub _task($$;&) {
         $args{deps} = shift @_;
         $args{deps} = [$args{deps}] if !ref $args{deps};
     }
+    my $caller = caller(0);
+    my $desc = $caller->engine->clear_temporary_desc;
+    if (defined $desc) {
+        $args{desc} = $desc;
+    }
+
     my $task = Daiku::Task->new( %args );
-    caller(0)->engine->register($task);
+    $caller->engine->register($task);
 }
 
 # file 'all' => ['a', 'b'];
@@ -78,6 +91,7 @@ Daiku - Make for Perl
     use Daiku;
     use autodie ':all';
 
+    desc 'do all tasks';
     task 'all' => 'foo';
     file 'foo' => 'foo.o' => sub {
         system "gcc -c foo foo.o";
@@ -95,6 +109,10 @@ Daiku is yet another build system for Perl5.
 =head1 FUNCTIONS
 
 =over 4
+
+=item C<< desc $desc:Str >>
+
+Description of following task.
 
 =item C<< task $name:Str, \@deps:ArrayRef[Str] >>
 

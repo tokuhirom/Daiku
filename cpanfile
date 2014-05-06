@@ -12,6 +12,7 @@ requires 'Getopt::Long', '2.39';
 requires 'Pod::Usage';
 
 on test => sub {
+    requires 'Capture::Tiny';
     requires 'Fatal';
     requires 'File::Temp';
     requires 'Test::More', '0.98';

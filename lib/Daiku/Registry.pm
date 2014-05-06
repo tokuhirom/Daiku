@@ -16,6 +16,12 @@ has tasks => (
     default => sub { tie my %h, "Tie::IxHash"; \%h },
 );
 
+has temporary_desc => (
+    is      => 'rw',
+    isa     => 'Str',
+    clearer => 'clear_temporary_desc',
+);
+
 sub register {
     my ($self, $task) = (shift, shift);
     my $orig = $self->find_task($task->dst);
