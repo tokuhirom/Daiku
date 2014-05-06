@@ -16,6 +16,7 @@ sub import {
     *{"${pkg}::file"} = \&_file;
     *{"${pkg}::rule"} = \&_rule;
     *{"${pkg}::sh"}   = \&IPC::System::Simple::run;
+    *{"${pkg}::namespace"} = \&_namespace;
     my $engine = Daiku::Registry->new();
     *{"${pkg}::engine"} = sub { $engine };
     *{"${pkg}::build"} = sub { $engine->build(@_) };
@@ -39,14 +40,15 @@ sub _task($$;&) {
         $args{deps} = shift @_;
         $args{deps} = [$args{deps}] if !ref $args{deps};
     }
-    my $caller = caller(0);
-    my $desc = $caller->engine->clear_temporary_desc;
+    my $engine = caller(0)->engine;
+    my $desc = $engine->clear_temporary_desc;
     if (defined $desc) {
         $args{desc} = $desc;
     }
+    $args{dst} = join ':', @{ $engine->namespaces }, $args{dst};
 
     my $task = Daiku::Task->new( %args );
-    $caller->engine->register($task);
+    $engine->register($task);
 }
 
 # file 'all' => ['a', 'b'];
@@ -74,7 +76,14 @@ sub _rule($$&) {
     caller(0)->engine->register($rule);
 }
 
+sub _namespace($$) {
+    my ($namespace, $code) = @_;
 
+    my $engine = caller(0)->engine;
+    push @{ $engine->namespaces }, $namespace;
+    $code->();
+    pop @{ $engine->namespaces };
+}
 
 1;
 __END__
@@ -140,6 +149,10 @@ Register a suffix rule. It's same as following code on Make.
 =item C<< build $task : Str >>
 
 Build one object named $task.
+
+=item C<< namesace $namespace:Str, \&codeblock >>
+
+Declare namespace of tasks. Namespaces are spearated by colon.
 
 =back
 
