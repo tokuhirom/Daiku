@@ -22,6 +22,12 @@ has temporary_desc => (
     clearer => 'clear_temporary_desc',
 );
 
+has namespaces => (
+    is      => 'rw',
+    isa     => 'ArrayRef',
+    default => sub { [] },
+);
+
 sub register {
     my ($self, $task) = (shift, shift);
     my $orig = $self->find_task($task->dst);
