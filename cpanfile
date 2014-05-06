@@ -10,6 +10,7 @@ requires 'Tie::IxHash';
 requires 'autodie';
 requires 'Getopt::Long', '2.39';
 requires 'Pod::Usage';
+requires 'Parse::CommandLine';
 
 on test => sub {
     requires 'Capture::Tiny';
