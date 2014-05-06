@@ -2,6 +2,9 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+    - support namespace inspired by rake
+      (songmu)
+
 0.09 2014-05-06T05:01:51Z
 
     - implement 'sh' DSL inspired by rake
