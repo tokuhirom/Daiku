@@ -2,9 +2,9 @@ package Daiku::CLI;
 use strict;
 use warnings;
 use Daiku::Daikufile;
-use Getopt::Long ();
+use Getopt::Long 2.39 ();
 
-use Mouse;
+use Mouse 0.92;
 
 has file => (
     is      => 'rw',

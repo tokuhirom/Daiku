@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom AAJKLFJEF GMAIL COM>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.15.1, CPAN::Meta::Converter version 2.140640",
+   "generated_by" : "Minilla/v0.15.2, CPAN::Meta::Converter version 2.141170",
    "license" : [
       "perl_5"
    ],
@@ -51,7 +51,6 @@
             "Tie::IxHash" : "0",
             "Time::HiRes" : "1.9701",
             "autodie" : "0",
-            "parent" : "0",
             "perl" : "5.008001"
          }
       },
@@ -60,7 +59,8 @@
             "Capture::Tiny" : "0",
             "Fatal" : "0",
             "File::Temp" : "0",
-            "Test::More" : "0.98"
+            "Test::More" : "0.98",
+            "parent" : "0"
          }
       }
    },

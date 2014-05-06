@@ -5,7 +5,7 @@ use utf8;
 package Daiku::File;
 use File::stat;
 use Mouse;
-use Time::HiRes ();
+use Time::HiRes 1.9701 ();
 
 with 'Daiku::Role';
 
