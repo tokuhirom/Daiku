@@ -2,6 +2,13 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+0.09 2014-05-06T05:01:51Z
+
+    - implement 'sh' DSL inspired by rake
+      (songmu)
+    - description support inspired by rake
+      (songmu)
+
 0.08 2014-03-12T20:38:25Z
 
     - daiku command requires Getopt::Long 2.39+
