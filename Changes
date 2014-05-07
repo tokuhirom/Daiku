@@ -2,6 +2,8 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+0.10 2014-05-07T04:38:11Z
+
     - support namespace inspired by rake
       (songmu)
     - support argument of task using brackets

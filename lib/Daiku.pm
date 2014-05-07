@@ -3,7 +3,7 @@ use warnings FATAL => 'recursion';
 
 package Daiku;
 use 5.008001;
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 use Daiku::Registry;
 use IPC::System::Simple ();
 
@@ -152,7 +152,7 @@ Build one object named $task.
 
 =item C<< namesace $namespace:Str, \&codeblock >>
 
-Declare namespace of tasks. Namespaces are spearated by colon.
+Declare namespace of tasks. Namespaces are separated by colon.
 
 =back
 

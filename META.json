@@ -46,6 +46,7 @@
             "IPC::System::Simple" : "0",
             "Mouse" : "0.92",
             "Mouse::Role" : "0",
+            "Parse::CommandLine" : "0",
             "Pod::Usage" : "0",
             "Scalar::Util" : "0",
             "Tie::IxHash" : "0",
@@ -76,10 +77,10 @@
          "web" : "https://github.com/tokuhirom/Daiku"
       }
    },
-   "version" : "0.09",
+   "version" : "0.10",
    "x_contributors" : [
       "Shoichi Kaji <skaji@cpan.org>",
-      "Songmu <y.songmu@gmail.com>",
-      "Tokuhiro Matsuno <tokuhirom@gmail.com>"
+      "Tokuhiro Matsuno <tokuhirom@gmail.com>",
+      "Songmu <y.songmu@gmail.com>"
    ]
 }

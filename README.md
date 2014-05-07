@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/tokuhirom/Daiku.png?branch=master)](https://travis-ci.org/tokuhirom/Daiku) [![Coverage Status](https://coveralls.io/repos/tokuhirom/Daiku/badge.png?branch=master)](https://coveralls.io/r/tokuhirom/Daiku?branch=master)
 # NAME
 
 Daiku - Make for Perl
@@ -51,6 +52,10 @@ Daiku is yet another build system for Perl5.
 - `build $task : Str`
 
     Build one object named $task.
+
+- `namesace $namespace:Str, \&codeblock`
+
+    Declare namespace of tasks. Namespaces are separated by colon.
 
 # NOTE
 
