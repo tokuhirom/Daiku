@@ -13,17 +13,17 @@ my $tmpdir = tmpdir();
 task 'all' => 'a.out';
 
 task 'clean', sub {
-	unlink $_ for qw/b.o a.out c.o/;
+    unlink $_ for qw/b.o a.out c.o/;
 };
 
 file 'a.out' => ['b.o', 'c.o'] => sub {
-	link_([qw/b.o c.o/] => 'a.out');
+    link_([qw/b.o c.o/] => 'a.out');
 };
 file 'b.o' => 'b.c' => sub {
-	compile('b.c' => 'b.o');
+    compile('b.c' => 'b.o');
 };
 file 'c.o' => 'c.c' => sub {
-	compile('c.c' => 'c.o');
+    compile('c.c' => 'c.o');
 };
 
 write_file("c.c", "c1");

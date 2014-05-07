@@ -16,7 +16,7 @@ sub touch {
 
 
 sub tmpdir() {
-	t::Util::TmpDir->new();
+    t::Util::TmpDir->new();
 }
 
 sub slurp {
@@ -48,18 +48,18 @@ use File::Temp qw/tempdir/;
 use Cwd;
 
 sub new {
-	my $class = shift;
-	my $self = bless {}, $class;
-	$self->{cwd} = Cwd::getcwd();
-	$self->{dir} = tempdir(CLENAUP => 1);
-	chdir($self->{dir}) or die "Cannot chdir";
-	return $self;
+    my $class = shift;
+    my $self = bless {}, $class;
+    $self->{cwd} = Cwd::getcwd();
+    $self->{dir} = tempdir(CLENAUP => 1);
+    chdir($self->{dir}) or die "Cannot chdir";
+    return $self;
 }
 
 sub DESTROY {
-	my ($self) = @_;
-	chdir($self->{cwd});
-	delete $self->{$_} for keys %$self;
+    my ($self) = @_;
+    chdir($self->{cwd});
+    delete $self->{$_} for keys %$self;
 }
 
 1;

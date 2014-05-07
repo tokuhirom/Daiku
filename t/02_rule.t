@@ -11,12 +11,12 @@ use Daiku;
 my $guard = tmpdir();
 
 file 'a.out' => [qw/b.o c.o/] => sub {
-	link_( [qw/b.o c.o/], 'a.out' )
+    link_( [qw/b.o c.o/], 'a.out' )
 };
 rule '.o' => '.c' => sub {
-	my ($task, $dst, $src) = @_;
-	note "Compiling: $src => $dst";
-	compile($src => $dst)
+    my ($task, $dst, $src) = @_;
+    note "Compiling: $src => $dst";
+    compile($src => $dst)
 };
 
 write_file("c.c", "c1");
