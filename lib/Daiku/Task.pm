@@ -33,12 +33,12 @@ has desc => (
 
 # @return affected things
 sub build {
-    my ($self) = @_;
+    my ($self, $target, @args) = @_;
     $self->log("Building Task: $self->{dst}");
 
     my $built = $self->_build_deps();
 
-    $self->code->($self);
+    $self->code->($self, @args);
     $built++;
 
     return $built;

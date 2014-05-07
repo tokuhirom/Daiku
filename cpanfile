@@ -9,6 +9,7 @@ requires 'Tie::IxHash';
 requires 'autodie';
 requires 'Getopt::Long', '2.39';
 requires 'Pod::Usage';
+requires 'Parse::CommandLine';
 
 on configure => sub {
     requires 'Module::Build::Tiny', '0.035';

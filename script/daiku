@@ -33,7 +33,17 @@ daiku - make(1) for Perl
 
 =head1 ARGUMENTS
 
-target
+=over 4
+
+=item target
+
+=item target[arg1 arg2]
+
+You can specify arguments of the task by bracket following in rake way.
+However arguments of daiku task is separated by spaces like traditional
+command line (Arguments of rake task is separated by comma).
+
+=back
 
 =head1 OPTIONS
 
