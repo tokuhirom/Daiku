@@ -41,6 +41,11 @@ task 'bartask' => sub {};
 
 desc 'baz';
 task 'bazz' => sub {};
+
+# make sure that file tasks are not displayed
+file 'hoge.txt' => sub {};
+# make sure that rule tasks are not displayed
+rule '.o' => '.h' => sub {};
 ...
 
     my $stdout = capture_stdout {
