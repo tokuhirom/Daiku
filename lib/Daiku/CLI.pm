@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Daiku::Daikufile;
 use Getopt::Long 2.39 ();
+use Encode qw/encode_utf8/;
 
 use Mouse 0.92;
 
@@ -86,7 +87,7 @@ sub _print_tasks {
     }
 
     for my $t (@tasks) {
-        printf "daiku %-${column_width}s  # %s\n", $t->{name}, $t->{desc};
+        printf "daiku %-${column_width}s  # %s\n", encode_utf8($t->{name}), encode_utf8($t->{desc});
     }
 }
 

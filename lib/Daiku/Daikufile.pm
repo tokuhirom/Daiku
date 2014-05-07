@@ -21,8 +21,10 @@ sub parse {
         $engine = eval <<"EVAL"; ## no critic
 package Daiku::Daikufile::Sandbox$file_id;
 use Daiku;
-no warnings;
-use autodie ':all';
+use strict;
+use warnings;
+use utf8;
+use autodie;
 
 # line 1 "$file"
 $code;

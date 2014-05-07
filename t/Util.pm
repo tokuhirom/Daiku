@@ -38,7 +38,7 @@ sub compile {
 
 sub write_file {
     my ($fname, $content) = @_;
-    open my $fh, '>', $fname or die "Cannot open file: $fname: $!";
+    open my $fh, '>:encoding(utf-8)', $fname or die "Cannot open file: $fname: $!";
     print({$fh} $content) or die "Cannot write file: $fname";
     close $fh or die "Cannot close file: $fname";
 }
