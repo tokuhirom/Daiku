@@ -14,9 +14,9 @@ file 'a.out' => [qw/b.o c.o/] => sub {
     link_( [qw/b.o c.o/], 'a.out' )
 };
 rule '.o' => '.c' => sub {
-    my ($task, $dst, $src) = @_;
-    note "Compiling: $src => $dst";
-    compile($src => $dst)
+    my $task = shift;
+    note sprintf("Compiling: %s => %s", $task->source, $task->name);
+    compile($task->source => $task->name);
 };
 
 write_file("c.c", "c1");

@@ -32,20 +32,20 @@ sub _desc($) {
 # task 'all' => ['a', 'b'] => sub { ... };
 sub _task($$;&) {
     my %args;
-    $args{dst} = shift @_;
+    $args{name} = shift @_;
     if (ref($_[-1]) eq 'CODE') {
         $args{code} = pop @_;
     }
     if (@_) {
-        $args{deps} = shift @_;
-        $args{deps} = [$args{deps}] if !ref $args{deps};
+        $args{sources} = shift @_;
+        $args{sources} = [$args{sources}] if !ref $args{sources};
     }
     my $engine = caller(0)->engine;
     my $desc = $engine->clear_temporary_desc;
     if (defined $desc) {
         $args{desc} = $desc;
     }
-    $args{dst} = join ':', @{ $engine->namespaces }, $args{dst};
+    $args{name} = join ':', @{ $engine->namespaces }, $args{name};
 
     my $task = Daiku::Task->new( %args );
     $engine->register($task);
@@ -56,22 +56,31 @@ sub _task($$;&) {
 # file 'all' => ['a', 'b'] => sub { ... };
 sub _file($$;&) {
     my %args;
-    $args{dst} = shift @_;
+    $args{name} = shift @_;
     if (ref($_[-1]) eq 'CODE') {
         $args{code} = pop @_;
     }
     if (@_) {
-        $args{deps} = shift @_;
-        $args{deps} = [$args{deps}] if !ref $args{deps};
+        $args{sources} = shift @_;
+        $args{sources} = [$args{sources}] if !ref $args{sources};
     }
     my $file = Daiku::File->new( %args );
     caller(0)->engine->register($file);
 }
 
-# rule '.c' => '.o' => sub { ... };
-sub _rule($$&) {
+# rule '.o' => ['.c', '.h'] => sub { ... };
+# rule '.o' => sub { ... };
+sub _rule($$;&) {
     my %args;
-    @args{qw/dst src code/} = @_;
+    $args{name_rule} = shift @_;
+    if (ref($_[-1]) eq 'CODE') {
+        $args{code} = pop @_;
+    }
+    if (@_) {
+        $args{source_rules} = shift @_;
+        $args{source_rules} = [$args{source_rules}] if !ref $args{source_rules};
+    }
+    $args{name} = $args{name_rule};
     my $rule = Daiku::SuffixRule->new( %args );
     caller(0)->engine->register($rule);
 }

@@ -9,23 +9,6 @@ use Mouse;
 
 with 'Daiku::Role';
 
-has dst => (
-    is       => 'rw',
-    isa      => 'Str',
-    required => 1,
-);
-has deps => (
-    is  => 'rw',
-    isa => 'ArrayRef[Str]',
-    default => sub { +[ ] },
-);
-has code => (
-    is      => 'rw',
-    isa     => 'CodeRef',
-    default => sub {
-        sub { }
-    },
-);
 has desc => (
     is  => 'ro',
     isa => 'Maybe[Str]',
@@ -34,7 +17,7 @@ has desc => (
 # @return affected things
 sub build {
     my ($self, $target, @args) = @_;
-    $self->log("Building Task: $self->{dst}");
+    $self->log("Building Task: $self->{name}");
 
     my $built = $self->_build_deps();
 
@@ -46,7 +29,7 @@ sub build {
 
 sub match {
     my ($self, $target) = @_;
-    return 1 if $self->dst eq $target;
+    return 1 if $self->name eq $target;
     return 0;
 }
 
@@ -55,12 +38,12 @@ sub _build_deps {
     my ($self) = @_;
 
     my $ret = 0;
-    for my $target (@{$self->deps}) {
+    for my $target (@{$self->sources}) {
         my $task = $self->registry->find_task($target);
         if ($task) {
             $ret += $task->build($target);
         } else {
-            die "I don't know to build '$target' depended by '$self->{dst}'\n";
+            die "I don't know to build '$target' depended by '$self->{name}'\n";
         }
     }
     return $ret;
