@@ -28,9 +28,7 @@ task "die" => sub {
 my $exit;
 
 $exit = Daiku::CLI->new->run;
-is $exit, 0;
-ok -f "touch1", "default target is frist target, i.e. touch1";
-ok !-f "touch2";
+is $exit, 2, 'no default target';
 clean;
 
 $exit = Daiku::CLI->new->run("touch1", "touch2");

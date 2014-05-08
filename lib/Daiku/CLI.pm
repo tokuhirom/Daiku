@@ -53,10 +53,9 @@ sub run {
     }
 
     if (!@target) {
-        my $first_target = $engine->first_target
-            or die "Missing target.\n";
-        push @target, $first_target;
+        @target = ('default');
     }
+
     my $exit = 0;
     for my $target (@target) {
         eval { $engine->build($target) };

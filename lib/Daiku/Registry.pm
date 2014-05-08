@@ -68,12 +68,6 @@ sub find_task {
     return undef;
 }
 
-sub first_target {
-    my $self = shift;
-    my ($target) = keys %{$self->{tasks}};
-    return $target;
-}
-
 no Mouse; __PACKAGE__->meta->make_immutable;
 
 __END__
