@@ -2,6 +2,12 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+1.00 2014-05-08T09:38:05Z
+
+    - fix outputs
+    - [IMCOMPATIBLE] 'default' is a default target of `daiku`
+    - [IMCOMPATIBLE] remove Daiku::Registory#first_target method
+
 0.10 2014-05-07T04:38:11Z
 
     - support namespace inspired by rake
