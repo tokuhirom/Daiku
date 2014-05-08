@@ -42,7 +42,7 @@ sub run {
 
     $self->file($file) if $file;
     if ($directory) {
-        chdir $directory or die "chdir $directory failed: $!";
+        chdir $directory or die "chdir $directory failed: $!\n";
     }
 
     my $engine = Daiku::Daikufile->parse($self->file);

@@ -60,7 +60,7 @@ sub _build_deps {
         if ($task) {
             $ret += $task->build($target);
         } else {
-            die "I don't know to build '$target' depended by '$self->{dst}'";
+            die "I don't know to build '$target' depended by '$self->{dst}'\n";
         }
     }
     return $ret;

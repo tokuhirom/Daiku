@@ -9,7 +9,7 @@ sub parse {
     my ($self, $file) = @_;
 
     my $code = do {
-        open my $fh, "<", $file or die "open $file failed: $!";
+        open my $fh, "<", $file or die "open $file failed: $!\n";
         local $/; <$fh>;
     };
 
@@ -33,7 +33,7 @@ EVAL
         $err = $@;
     }
 
-    if ($err) { die "Parsing $file failed: $err" }
+    if ($err) { die "Parsing $file failed: $err\n" }
 
     return $engine;
 }

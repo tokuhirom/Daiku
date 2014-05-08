@@ -41,7 +41,7 @@ sub register {
 sub build {
     my ($self, $target) = @_;
     if (!defined $target) {
-        die "Missing target";
+        die "Missing target\n";
     }
 
     # parsing 'task_name[arg1 arg2]'
@@ -53,7 +53,7 @@ sub build {
     if ($task) {
         return $task->build($target, @args);
     } else {
-        die "There is no rule to build '$target'";
+        die "There is no rule to build '$target'\n";
     }
 }
 

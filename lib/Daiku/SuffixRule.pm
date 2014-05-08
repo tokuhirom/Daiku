@@ -40,7 +40,7 @@ sub build {
     (my $src = $target) =~ s/\Q$self->{dst}\E$/$self->{src}/;
     my $need_rebuild = sub {
         return 1 unless -f $target;
-        die "Missing source file '$src' to build '$target'" unless -f $src;
+        die "Missing source file '$src' to build '$target'\n" unless -f $src;
         if (stat($target)->mtime < stat($src)->mtime) {
             return 1;
         } else {
