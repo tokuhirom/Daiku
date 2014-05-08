@@ -9,27 +9,21 @@ use Time::HiRes 1.9701 ();
 use Mouse;
 with 'Daiku::Role';
 
-has srcs => (
-    is       => 'ro',
-    isa      => 'ArrayRef[Str]',
-    required => 1,
-);
-has dst => (
+has name_rule => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
 );
-has code => (
-    is      => 'ro',
-    isa     => 'CodeRef',
-    default => sub {
-        sub { }
-    },
+
+has source_rules => (
+    is       => 'ro',
+    isa      => 'ArrayRef[Str]',
+    default  => sub { [] },
 );
 
 sub match {
     my ($self, $target) = @_;
-    return 1 if $target =~ /\Q$self->{dst}\E$/;
+    return 1 if $target =~ /\Q$self->{name_rule}\E$/;
     return 0;
 }
 
@@ -40,9 +34,14 @@ sub build {
     my ($built, $need_rebuild, $sources) = $self->_build_deps($target);
 
     if ($need_rebuild || !-f $target) {
-        $self->log("  Building file: $target($need_rebuild)");
+        # Since we overwrite name and sources attributes,
+        # clone $self for safety
+        my $clone = $self->clone;
+        $clone->name($target);
+        $clone->sources($sources);
+        $clone->log("  Building file: $clone->{name}($need_rebuild)");
         $built++;
-        $self->code->($self, $target, $sources);
+        $clone->code->($clone);
     } else {
         $self->debug("There is no reason to regenerate $target");
     }
@@ -55,8 +54,8 @@ sub _build_deps {
     my $built = 0;
     my $need_rebuild = 0;
     my @sources;
-    for my $src (@{$self->srcs}) {
-        (my $source = $target) =~ s/\Q$self->{dst}\E$/$src/;
+    for my $source_rule (@{$self->source_rules}) {
+        (my $source = $target) =~ s/\Q$self->{name_rule}\E$/$source_rule/;
         push @sources, $source;
         my $task = $self->registry->find_task($source);
         if ($task) {

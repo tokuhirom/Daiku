@@ -6,13 +6,13 @@ use Test::More;
 use Daiku::Task;
 use Scalar::Util qw/refaddr/;
 
-my $task = Daiku::Task->new(dst => 'a', deps => ['b']);
+my $task = Daiku::Task->new(name => 'a', sources => ['b']);
 my $cloned = $task->clone();
 isnt(refaddr($task), refaddr($cloned));
-$task->dst('c');
-$task->deps(['d']);
-is($cloned->dst, 'a');
-is_deeply($cloned->deps, ['b']);
+$task->name('c');
+$task->sources(['d']);
+is($cloned->name, 'a');
+is_deeply($cloned->sources, ['b']);
 
 done_testing;
 

@@ -9,44 +9,24 @@ use Time::HiRes 1.9701 ();
 
 with 'Daiku::Role';
 
-has dst => (
-    is       => 'rw',
-    isa      => 'Str',
-    required => 1,
-);
-
-has deps => (
-    is       => 'rw',
-    isa      => 'ArrayRef[Str]',
-    default  => sub { +[] },
-);
-
-has code => (
-    is      => 'rw',
-    isa     => 'CodeRef',
-    default => sub {
-        sub { }
-    },
-);
-
 sub build {
     my ($self) = @_;
 
-    $self->log("Processing file: $self->{dst}");
+    $self->log("Processing file: $self->{name}");
     my ($built, $need_rebuild) = $self->_build_deps();
-    if ($need_rebuild || (!-f $self->dst)) {
-        $self->log("  Building file: $self->{dst}($need_rebuild)");
+    if ($need_rebuild || (!-f $self->name)) {
+        $self->log("  Building file: $self->{name}($need_rebuild)");
         $built++;
         $self->code->($self);
     } else {
-        $self->debug("There is no reason to regenerate $self->{dst}");
+        $self->debug("There is no reason to regenerate $self->{name}");
     }
     return $built;
 }
 
 sub match {
     my ($self, $target) = @_;
-    return 1 if $self->dst eq $target;
+    return 1 if $self->name eq $target;
     return 0;
 }
 
@@ -56,7 +36,7 @@ sub _build_deps {
 
     my $built = 0;
     my $need_rebuild = 0;
-    for my $target (@{$self->deps || []}) {
+    for my $target (@{$self->sources}) {
         my $task = $self->registry->find_task($target);
         if ($task) {
             $built += $task->build($target);
@@ -64,7 +44,7 @@ sub _build_deps {
                 $need_rebuild += $self->_check_need_rebuild($target);
             }
         } else {
-            die "I don't know to build '$target' depended by '$self->{dst}'\n";
+            die "I don't know to build '$target' depended by '$self->{name}'\n";
         }
     }
     return ($built, $need_rebuild);
@@ -74,9 +54,9 @@ sub _check_need_rebuild {
     my ($self, $target) = @_;
 
     my $m1 = _mtime($target);
-    return 0 unless -f $self->dst;
+    return 0 unless -f $self->name;
 
-    my $m2 = _mtime($self->dst);
+    my $m2 = _mtime($self->name);
 
     return 1 if $m2 < $m1;
     return 0;

@@ -59,8 +59,9 @@ sub run {
     my $exit = 0;
     for my $target (@target) {
         eval { $engine->build($target) };
-        if ($@) {
-            warn "$@\n";
+        if (my $e = $@) {
+            chomp $e;
+            warn "$e\n";
             $exit = 2; # like make(1)
             last;
         }
@@ -76,7 +77,7 @@ sub _print_tasks {
     for my $task (values %$tasks) {
         next unless $task->isa('Daiku::Task') && defined $task->desc;
 
-        my $task_name = $task->dst;
+        my $task_name = $task->name;
         my $len = length $task_name;
         $column_width = $len if $column_width < $len;
         push @tasks, {

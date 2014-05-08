@@ -13,9 +13,9 @@ file 'a.out' => ['b.o', 'c.o'] => sub {
 };
 
 rule '.o' => ['.h', '.c'] => sub {
-    my ($task, $dst, $srcs) = @_;
-    my ($h, $c) = @{ $srcs };
-    write_file( $dst, slurp($h) . ";" . slurp($c) );
+    my $task = shift;
+    my ($h, $c) = @{ $task->sources };
+    write_file( $task->name, slurp($h) . ";" . slurp($c) );
 };
 write_file('b.c' => 'bc');
 write_file('b.h' => 'bh');

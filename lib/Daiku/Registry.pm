@@ -32,9 +32,9 @@ has namespaces => (
 
 sub register {
     my ($self, $task) = (shift, shift);
-    my $orig = $self->find_task($task->dst);
+    my $orig = $self->find_task($task->name);
     $task->merge($orig) if $orig;
-    $self->tasks->{$task->dst} = $task;
+    $self->tasks->{$task->name} = $task;
     $task->registry($self);
 }
 
@@ -63,7 +63,7 @@ sub find_task {
         return $task if $task->match($target);
     }
     if ( -f $target ) {
-        return Daiku::File->new( dst => $target );
+        return Daiku::File->new( name => $target );
     }
     return undef;
 }

@@ -15,6 +15,25 @@ has registry => (
     isa      => 'Maybe[Daiku::Registry]',
     weak_ref => 1,
 );
+has name => (
+    is       => 'rw',
+    isa      => 'Str',
+    required => 1,
+);
+has sources => (
+    is  => 'rw',
+    isa => 'ArrayRef[Str]',
+    default => sub { +[ ] },
+);
+has code => (
+    is      => 'rw',
+    isa     => 'CodeRef',
+    default => sub { sub { } },
+);
+sub source {
+    my $self = shift;
+    return @{ $self->sources } ? $self->sources->[0] : undef;
+}
 
 sub clone {
     my $self = shift;
@@ -43,16 +62,17 @@ sub merge {
     Carp::croak("Cannot merge defferent type task: $task")
       if blessed($self) ne blessed($task);
 
-    if ($self->can('deps')) {
-        unshift @{$self->deps}, @{$task->deps};
+    if ($self->meta->has_attribute('source_rules')) {
+        unshift @{$self->source_rules}, @{$task->source_rules};
+    } else {
+        unshift @{$self->sources}, @{$task->sources};
     }
 
-    my $code = $self->code();
     my $orig_code = $self->code();
     my $other_code = $task->code();
     $self->code(sub {
-        $other_code->();
-        $orig_code->();
+        $other_code->(@_);
+        $orig_code->(@_);
     });
 }
 

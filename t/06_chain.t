@@ -18,7 +18,7 @@ task 'all' => 'bar' => sub {
 task 'foo' => sub { $FFF .= "foo " };
 task 'bar' => sub { $FFF .= "bar " };
 
-is( join( ',', @{ engine()->find_task('all')->deps } ), 'foo,bar' );
+is( join( ',', @{ engine()->find_task('all')->sources } ), 'foo,bar' );
 
 build 'all';
 
