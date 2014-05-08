@@ -71,7 +71,8 @@ sub _file($$;&) {
 # rule '.c' => '.o' => sub { ... };
 sub _rule($$&) {
     my %args;
-    @args{qw/dst src code/} = @_;
+    @args{qw/dst srcs code/} = @_;
+    $args{srcs} = [$args{srcs}] if !ref $args{srcs};
     my $rule = Daiku::SuffixRule->new( %args );
     caller(0)->engine->register($rule);
 }

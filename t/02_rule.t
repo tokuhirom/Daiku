@@ -14,7 +14,8 @@ file 'a.out' => [qw/b.o c.o/] => sub {
     link_( [qw/b.o c.o/], 'a.out' )
 };
 rule '.o' => '.c' => sub {
-    my ($task, $dst, $src) = @_;
+    my ($task, $dst, $srcs) = @_;
+    my $src = $srcs->[0];
     note "Compiling: $src => $dst";
     compile($src => $dst)
 };

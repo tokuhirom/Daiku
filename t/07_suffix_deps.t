@@ -12,7 +12,8 @@ file 'a.out' => ['b.o', 'c.o'] => sub {
     link_(['b.o', 'c.o'] => 'a.out');
 };
 rule '.o' => '.c' => sub {
-    my ($task, $dst, $src) = @_;
+    my ($task, $dst, $srcs) = @_;
+    my $src = $srcs->[0];
     compile($src => $dst);
 };
 write_file('b.c' => 'b1');
