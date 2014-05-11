@@ -5,14 +5,12 @@ use utf8;
 # Suffix Rule, same as Makefile.
 # like '.c.o' in Makefile.
 package Daiku::SuffixRule;
+use Time::HiRes 1.9701 ();
 use Mouse;
 with 'Daiku::Role';
 
-use File::stat;
-
 has src => (
     is       => 'ro',
-    isa      => 'Str',
     required => 1,
 );
 has dst => (
@@ -37,24 +35,58 @@ sub match {
 sub build {
     my ($self, $target) = @_;
     $self->log("Building SuffixRule: $target");
-    (my $src = $target) =~ s/\Q$self->{dst}\E$/$self->{src}/;
-    my $need_rebuild = sub {
-        return 1 unless -f $target;
-        die "Missing source file '$src' to build '$target'\n" unless -f $src;
-        if (stat($target)->mtime < stat($src)->mtime) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }->();
-    if ($need_rebuild) {
-        $self->log("  Building rule: $target");
-        $self->code->($self, $target, $src);
-        return 1;
+    my ($built, $need_rebuild, $sources) = $self->_build_deps($target);
+
+    if ($need_rebuild || !-f $target) {
+        $built++;
+        $self->code->($self, $target, @$sources);
     } else {
-        $self->log("  nop rule: $target");
-        return 0;
+        $self->debug("There is no reason to regenerate $target");
     }
+    return $built;
+}
+
+sub _build_deps {
+    my ($self, $target) = @_;
+
+    my $built = 0;
+    my $need_rebuild = 0;
+    my @sources;
+    my @srcs = ($self->src);
+       @srcs = @{ $srcs[0] } if (ref($srcs[0]) || '') eq 'ARRAY';
+    for my $src (@srcs) {
+        if ( (ref($src) || '') eq 'CODE') {
+            my @add_sources = _flatten($src->($target));
+            push @sources, @add_sources;
+        }
+        else {
+            (my $source = $target) =~ s/\Q$self->{dst}\E$/$src/;
+            push @sources, $source;
+        }
+    }
+
+    for my $source (@sources) {
+        my $task = $self->registry->find_task($source);
+        if ($task) {
+            $built += $task->build($source);
+            if (-f $target && -f $source) {
+                $need_rebuild += 1 if _mtime($target) < _mtime($source);
+            }
+        } else {
+            die "I don't know to build '$source' depended by '$target'\n";
+        }
+    }
+
+    return ($built, $need_rebuild, \@sources);
+}
+
+sub _mtime {
+    my $fname = shift;
+    (Time::HiRes::stat($fname))[9];
+}
+
+sub _flatten {
+    map { ref $_ && ref $_ eq 'ARRAY' ? _flatten(@{$_}) : $_ } @_;
 }
 
 no Mouse;
