@@ -52,12 +52,20 @@ sub _build_deps {
     my $built = 0;
     my $need_rebuild = 0;
     my @sources;
-
     my @srcs = ($self->src);
        @srcs = @{ $srcs[0] } if (ref($srcs[0]) || '') eq 'ARRAY';
     for my $src (@srcs) {
-        (my $source = $target) =~ s/\Q$self->{dst}\E$/$src/;
-        push @sources, $source;
+        if ( (ref($src) || '') eq 'CODE') {
+            my @add_sources = _flatten($src->($target));
+            push @sources, @add_sources;
+        }
+        else {
+            (my $source = $target) =~ s/\Q$self->{dst}\E$/$src/;
+            push @sources, $source;
+        }
+    }
+
+    for my $source (@sources) {
         my $task = $self->registry->find_task($source);
         if ($task) {
             $built += $task->build($source);
@@ -68,12 +76,17 @@ sub _build_deps {
             die "I don't know to build '$source' depended by '$target'\n";
         }
     }
+
     return ($built, $need_rebuild, \@sources);
 }
 
 sub _mtime {
     my $fname = shift;
     (Time::HiRes::stat($fname))[9];
+}
+
+sub _flatten {
+    map { ref $_ && ref $_ eq 'ARRAY' ? _flatten(@{$_}) : $_ } @_;
 }
 
 no Mouse;
