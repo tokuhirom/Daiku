@@ -11,7 +11,6 @@ with 'Daiku::Role';
 
 has src => (
     is       => 'ro',
-    isa      => 'ArrayRef[Str]',
     required => 1,
 );
 has dst => (
@@ -53,7 +52,10 @@ sub _build_deps {
     my $built = 0;
     my $need_rebuild = 0;
     my @sources;
-    for my $src (@{$self->src}) {
+
+    my @srcs = ($self->src);
+       @srcs = @{ $srcs[0] } if (ref($srcs[0]) || '') eq 'ARRAY';
+    for my $src (@srcs) {
         (my $source = $target) =~ s/\Q$self->{dst}\E$/$src/;
         push @sources, $source;
         my $task = $self->registry->find_task($source);
