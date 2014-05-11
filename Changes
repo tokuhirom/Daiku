@@ -2,6 +2,15 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+1.001 2014-05-11T12:39:01Z
+
+    - pass argv to merged task callbacks
+      (Shoichi Kaji)
+    - support multiple suffix rule
+      (Shoichi Kaji)
+    - support coredef src in suffix rule
+      (Songmu)
+
 1.00 2014-05-08T09:38:05Z
 
     - fix outputs

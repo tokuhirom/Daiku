@@ -77,10 +77,10 @@
          "web" : "https://github.com/tokuhirom/Daiku"
       }
    },
-   "version" : "1.00",
+   "version" : "1.001",
    "x_contributors" : [
-      "Shoichi Kaji <skaji@cpan.org>",
       "Tokuhiro Matsuno <tokuhirom@gmail.com>",
+      "Shoichi Kaji <skaji@cpan.org>",
       "Songmu <y.songmu@gmail.com>"
    ]
 }
