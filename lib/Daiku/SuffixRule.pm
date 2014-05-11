@@ -9,7 +9,7 @@ use Time::HiRes 1.9701 ();
 use Mouse;
 with 'Daiku::Role';
 
-has srcs => (
+has src => (
     is       => 'ro',
     isa      => 'ArrayRef[Str]',
     required => 1,
@@ -53,7 +53,7 @@ sub _build_deps {
     my $built = 0;
     my $need_rebuild = 0;
     my @sources;
-    for my $src (@{$self->srcs}) {
+    for my $src (@{$self->src}) {
         (my $source = $target) =~ s/\Q$self->{dst}\E$/$src/;
         push @sources, $source;
         my $task = $self->registry->find_task($source);

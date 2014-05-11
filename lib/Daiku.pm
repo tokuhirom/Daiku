@@ -76,8 +76,8 @@ sub _rule($$;&) {
         $args{code} = pop @_;
     }
     if (@_) {
-        $args{srcs} = shift @_;
-        $args{srcs} = [$args{srcs}] if !ref $args{srcs};
+        $args{src} = shift @_;
+        $args{src} = [$args{src}] if !ref $args{src};
     }
     my $rule = Daiku::SuffixRule->new( %args );
     caller(0)->engine->register($rule);
