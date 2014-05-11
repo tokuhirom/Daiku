@@ -47,12 +47,11 @@ sub merge {
         unshift @{$self->deps}, @{$task->deps};
     }
 
-    my $code = $self->code();
     my $orig_code = $self->code();
     my $other_code = $task->code();
     $self->code(sub {
-        $other_code->();
-        $orig_code->();
+        $other_code->(@_);
+        $orig_code->(@_);
     });
 }
 
