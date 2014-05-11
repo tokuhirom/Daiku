@@ -52,9 +52,7 @@ sub _build_deps {
     my $built = 0;
     my $need_rebuild = 0;
     my @sources;
-    my @srcs = ($self->src);
-       @srcs = @{ $srcs[0] } if (ref($srcs[0]) || '') eq 'ARRAY';
-    for my $src (@srcs) {
+    for my $src (_flatten($self->src)) {
         if ( (ref($src) || '') eq 'CODE') {
             my @add_sources = _flatten($src->($target));
             push @sources, @add_sources;
