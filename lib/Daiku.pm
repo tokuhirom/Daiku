@@ -138,7 +138,7 @@ Register .PHONY task to registrar.
 
 =item C<< file $name, \@deps:ArrayRef[Str], \&code >>
 
-Register a file creation rule.
+Register a file creation rule. See L<Daiku::File>.
 
 =item C<< rule $dst:Str, $src:Str, \&callback:CodeRef >>
 
@@ -151,7 +151,7 @@ Register a suffix rule. It's same as following code on Make.
 
 Build one object named $task.
 
-=item C<< namesace $namespace:Str, \&codeblock >>
+=item C<< namespace $namespace:Str, \&codeblock >>
 
 Declare namespace of tasks. Namespaces are separated by colon.
 
