@@ -38,6 +38,7 @@ daiku - make(1) for Perl
 =item target
 
 The target task name to build.
+If omitted, it builds the task named C<default>.
 
 =item target[arg1 arg2 ...]
 
@@ -63,11 +64,11 @@ Arguments are separated by spaces (NOT commas).
 
 =item -f, --file
 
-Use specifiled file as Daikufile.
+Use the specifiled file as Daikufile.
 
-=item -C, --direcotry
+=item -C, --directory
 
-Change to specified directory before reading the Daikufile or doing anything else.
+Change to the specified directory before reading the Daikufile or doing anything else.
 
 =item -h, --help
 
