@@ -116,6 +116,22 @@ Daiku - Make for Perl
 
 Daiku is yet another build system for Perl5.
 
+=head1 USAGE GUIDE
+
+=head2 use Daiku
+
+By declaring C<< use Daiku >> in your own Perl script,
+you can use L<Daiku> DSL to write your build procedure.
+
+See L</SYNOPSIS> for example of this usage.
+
+=head2 daiku command and Daikufile
+
+L<Daiku> comes with L<daiku> command-line tool.
+Just like C<make> reads C<Makefile>, L<daiku> reads C<Daikufile> and runs the build procedure.
+
+See L<daiku> for detail.
+
 =head1 FUNCTIONS
 
 =head2 desc
