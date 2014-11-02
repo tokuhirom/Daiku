@@ -6,31 +6,31 @@ use 5.008001;
 our $VERSION = '1.001';
 use Daiku::Registry;
 use IPC::System::Simple ();
+use Exporter qw(import);
 
-sub import {
-    my ($class) = @_;
-    my $pkg = caller(0);
-    no strict 'refs';
-    *{"${pkg}::desc"} = \&_desc;
-    *{"${pkg}::task"} = \&_task;
-    *{"${pkg}::file"} = \&_file;
-    *{"${pkg}::rule"} = \&_rule;
-    *{"${pkg}::sh"}   = \&IPC::System::Simple::run;
-    *{"${pkg}::namespace"} = \&_namespace;
-    my $engine = Daiku::Registry->new();
-    *{"${pkg}::engine"} = sub { $engine };
-    *{"${pkg}::build"} = sub { $engine->build(@_) };
+our @EXPORT = our @EXPORT_OK =
+    qw(desc task file rule sh namespace engine build);
+
+my %engine_for = ();
+
+sub _engine {
+    my ($caller_package) = @_;
+    return ($engine_for{$caller_package} ||= Daiku::Registry->new());
 }
 
-sub _desc($) {
+sub engine {
+    return _engine(caller(0));
+}
+
+sub desc($) {
     my $desc = shift;
 
-    caller(0)->engine->temporary_desc($desc);
+    _engine(caller(0))->temporary_desc($desc);
 }
 
 # task 'all' => ['a', 'b'];
 # task 'all' => ['a', 'b'] => sub { ... };
-sub _task($$;&) {
+sub task($$;&) {
     my %args;
     $args{dst} = shift @_;
     if (ref($_[-1]) eq 'CODE') {
@@ -40,7 +40,7 @@ sub _task($$;&) {
         $args{deps} = shift @_;
         $args{deps} = [$args{deps}] if !ref $args{deps};
     }
-    my $engine = caller(0)->engine;
+    my $engine = _engine(caller(0));
     my $desc = $engine->clear_temporary_desc;
     if (defined $desc) {
         $args{desc} = $desc;
@@ -54,7 +54,7 @@ sub _task($$;&) {
 # file 'all' => ['a', 'b'];
 # file 'all' => 'a';
 # file 'all' => ['a', 'b'] => sub { ... };
-sub _file($$;&) {
+sub file($$;&) {
     my %args;
     $args{dst} = shift @_;
     if (ref($_[-1]) eq 'CODE') {
@@ -65,26 +65,33 @@ sub _file($$;&) {
         $args{deps} = [$args{deps}] if !ref $args{deps};
     }
     my $file = Daiku::File->new( %args );
-    caller(0)->engine->register($file);
+    _engine(caller(0))->register($file);
 }
 
 # rule '.c' => '.o' => sub { ... };
-sub _rule($$;&) {
+sub rule($$;&) {
     my %args;
     @args{qw/dst src code/} = @_;
     delete $args{code} unless defined $args{code};
     my $rule = Daiku::SuffixRule->new( %args );
-    caller(0)->engine->register($rule);
+    _engine(caller(0))->register($rule);
 }
 
-sub _namespace($$) {
+sub namespace($$) {
     my ($namespace, $code) = @_;
 
-    my $engine = caller(0)->engine;
+    my $engine = _engine(caller(0));
     push @{ $engine->namespaces }, $namespace;
     $code->();
     pop @{ $engine->namespaces };
 }
+
+sub build {
+    _engine(caller(0))->build(@_);
+}
+
+*sh = *IPC::System::Simple::run;
+
 
 1;
 __END__
