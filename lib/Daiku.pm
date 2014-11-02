@@ -118,11 +118,20 @@ Daiku is yet another build system for Perl5.
 
 =head1 FUNCTIONS
 
+=head2 desc
+
 =over 4
 
 =item C<< desc $desc:Str >>
 
+=back
+
 Description of following task.
+
+
+=head2 task
+
+=over 4
 
 =item C<< task $name:Str, \@deps:ArrayRef[Str] >>
 
@@ -132,30 +141,55 @@ Description of following task.
 
 =item C<< task $name:Str, $deps:Str, \&callback >>
 
+=back
+
 Register .PHONY task to registrar.
+
+=head2 file
+
+=over 4
 
 =item C<< file $name, $deps:Str, \&code >>
 
 =item C<< file $name, \@deps:ArrayRef[Str], \&code >>
 
+=back
+
 Register a file creation rule. See L<Daiku::File>.
 
+=head2 rule
+
+=over 4
+
 =item C<< rule $dst:Str, $src:Str, \&callback:CodeRef >>
+
+=back
 
 Register a suffix rule. It's same as following code on Make.
 
     .c.o:
         cc -c $<
 
+=head2 build
+
+=over 4
+
 =item C<< build $task : Str >>
+
+=back
 
 Build one object named $task.
 
+=head2 namespace
+
+=over 4
+
 =item C<< namespace $namespace:Str, \&codeblock >>
+
+=back
 
 Declare namespace of tasks. Namespaces are separated by colon.
 
-=back
 
 =head1 NOTE
 
