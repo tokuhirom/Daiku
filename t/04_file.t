@@ -12,6 +12,8 @@ task 'clean' => sub {
     unlink $_ for qw/a.out b.o c.o/;
 };
 file 'a.out' => [qw/b.o c.o/] => sub {
+    my ($file) = @_;
+    isa_ok $file, "Daiku::File";
     link_( [qw/b.o c.o/], 'a.out' )
 };
 file 'b.o' => 'b.c' => sub {
