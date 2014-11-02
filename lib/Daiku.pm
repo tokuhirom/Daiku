@@ -230,7 +230,7 @@ The C<\&code> is executed when L<Daiku> builds this task.
 
     $code->($rule, $dst_filename, @src_filenames)
 
-where C<$rule> is a L<Daiku::SuffixRule> object, C<$dst_filename> is the destination filename
+where C<$rule> is a Daiku::SuffixRule object, C<$dst_filename> is the destination filename
 and C<@src_filenames> are the source filenames.
 The C<$code> is supposed to create the file named C<$dst_filename>.
 

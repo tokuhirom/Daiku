@@ -74,7 +74,7 @@ __END__
 
 =head1 NAME
 
-Daiku::Task - Task
+Daiku::Task - phony task
 
 =head1 DESCRIPTION
 
