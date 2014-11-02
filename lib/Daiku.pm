@@ -126,49 +126,115 @@ Daiku is yet another build system for Perl5.
 
 =back
 
-Description of following task.
+Description of the following task.
 
 
 =head2 task
 
 =over 4
 
-=item C<< task $name:Str, \@deps:ArrayRef[Str] >>
+=item C<< task $dst:Str, \@deps:ArrayRef[Str] >>
 
-=item C<< task $name:Str, \@deps:ArrayRef[Str], \&callback >>
+=item C<< task $dst:Str, \@deps:ArrayRef[Str], \&code:CodeRef >>
 
-=item C<< task $name:Str, $deps:Str >>
+=item C<< task $dst:Str, $deps:Str >>
 
-=item C<< task $name:Str, $deps:Str, \&callback >>
+=item C<< task $dst:Str, $deps:Str, \&code:CodeRef >>
+
+=item C<< task $dst:Str, \&code:CodeRef >>
 
 =back
 
-Register .PHONY task to registrar.
+Register a .PHONY task.
+
+If C<\&code> is passed, it is executed when L<Daiku> builds this task.
+
+    $code->($task, @args)
+
+where C<$task> is a L<Daiku::Task> object, and C<@args> is the arguments for the task.
+
+You can access attributes of the task via C<$task> object.
+
+    $dst = $task->dst;
+    $array_ref_of_deps = $task->deps;
+
+You can pass arguments to a task via C<build()> function. For example,
+
+    task "all", sub { my ($task, @args) = @_; ... };
+    build("all[xxx yyy]");
+
+then, C<@args> is C<< ("xxx", "yyy") >>.
+
+As you see in the above example, arguments are specified inside brackets,
+and they are parsed as if they were command-line arguments (i.e., arguments are separated by spaces).
+
+You can also specify task arguments via L<daiku> command.
 
 =head2 file
 
 =over 4
 
-=item C<< file $name, $deps:Str, \&code >>
+=item C<< file $dst, $deps:Str, \&code:CodeRef >>
 
-=item C<< file $name, \@deps:ArrayRef[Str], \&code >>
+=item C<< file $dst, \@deps:ArrayRef[Str], \&code:CodeRef >>
 
 =back
 
-Register a file creation rule. See L<Daiku::File>.
+Register a file creation rule.
+
+The C<\&code> is executed when L<Daiku> builds the file. It is supposed to create the file named C<$dst>.
+
+    $code->($file)
+
+where C<$file> is a L<Daiku::File> object.
+
+You can access attributes of the file task via C<$file> object.
+
+    $dst = $file->dst;
+    $array_ref_of_deps = $file->deps;
 
 =head2 rule
 
 =over 4
 
-=item C<< rule $dst:Str, $src:Str, \&callback:CodeRef >>
+=item C<< rule $dst:Str, $src:Str, \&code:CodeRef >>
+
+=item C<< rule $dst:Str, \@srcs:ArrayRef[Str], \&code:CodeRef >>
+
+=item C<< rule $dst:Str, \&srcs:CodeRef, \&code:CodeRef >>
 
 =back
 
-Register a suffix rule. It's same as following code on Make.
+Register a suffix rule. It's the same as following code in Make.
 
     .c.o:
         cc -c $<
+
+The C<\&code> is executed when L<Daiku> builds this task.
+
+    $code->($rule, $dst_filename, @src_filenames)
+
+where C<$rule> is a L<Daiku::SuffixRule> object, C<$dst_filename> is the destination filename
+and C<@src_filenames> are the source filenames.
+The C<$code> is supposed to create the file named C<$dst_filename>.
+
+If you pass a CodeRef as C<\&srcs>, it is executed to derive source filenames.
+
+    @src_filenames = $srcs->($dst_filename)
+
+For example,
+
+    rule '.o' => sub {
+        my ($file) = @_;
+        $file =~ s/\.o$//;
+        ("$file.h", "$file.c");
+    } => sub {
+        my ($task, $dst, $src_h, $src_c) = @_;
+        compile($src_c, $dst);
+    };
+
+You can also return an ArrayRef from C<\&srcs> instead of a list.
+In that case, the ArrayRef is just flattened.
 
 =head2 build
 
@@ -178,17 +244,49 @@ Register a suffix rule. It's same as following code on Make.
 
 =back
 
-Build one object named $task.
+Build one object named C<$task>.
+
+I<Return Value>: The number of built jobs.
 
 =head2 namespace
 
 =over 4
 
-=item C<< namespace $namespace:Str, \&codeblock >>
+=item C<< namespace $namespace:Str, \&codeblock:CodeRef >>
 
 =back
 
-Declare namespace of tasks. Namespaces are separated by colon.
+Declare a namespace of tasks. Namespaces can be nested.
+
+With namespaces, you can organize your tasks in a hierarchical way.
+For example,
+
+    namespace n1 => sub {
+        desc 't1';
+        task task1 => sub { };
+    
+        namespace n2 => sub {
+            desc 't2';
+            task task2 => sub { };
+        };
+    };
+
+The full task name includes all containing namespaces joined with colons (C<:>).
+
+    $ daiku n1:task1
+    $ daiku n1:n2:task2
+
+=head2 sh
+
+=over 4
+
+=item C<< sh @command:List[Str] >>
+
+=back
+
+Executes the C<@command>.
+
+This is similar to C<system()> built-in function, but it throws an exception when the command returns a non-zero exit value.
 
 
 =head1 NOTE
