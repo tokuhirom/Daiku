@@ -141,6 +141,8 @@ See L<daiku> for detail.
 
 =head1 FUNCTIONS
 
+The following functions are exported by default.
+
 =head2 desc
 
 =over 4
