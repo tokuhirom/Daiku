@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom AAJKLFJEF GMAIL COM>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.15.2, CPAN::Meta::Converter version 2.141170",
+   "generated_by" : "Minilla/v2.1.1, CPAN::Meta::Converter version 2.140640",
    "license" : [
       "perl_5"
    ],
@@ -77,10 +77,11 @@
          "web" : "https://github.com/tokuhirom/Daiku"
       }
    },
-   "version" : "1.001",
+   "version" : "1.002",
    "x_contributors" : [
       "Tokuhiro Matsuno <tokuhirom@gmail.com>",
       "Shoichi Kaji <skaji@cpan.org>",
+      "Toshio Ito <debug.ito@gmail.com>",
       "Songmu <y.songmu@gmail.com>"
    ]
 }

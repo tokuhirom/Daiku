@@ -2,6 +2,11 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+1.002 2014-11-03T13:38:03Z
+
+    - Documentation improvements. (debug-ito++)
+    - use Exporter in Daiku.pm instead of manually writing import(). (debug-ito++)
+
 1.001 2014-05-11T12:39:01Z
 
     - pass argv to merged task callbacks

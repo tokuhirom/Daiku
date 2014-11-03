@@ -3,7 +3,7 @@ use warnings FATAL => 'recursion';
 
 package Daiku;
 use 5.008001;
-our $VERSION = '1.001';
+our $VERSION = '1.002';
 use Daiku::Registry;
 use IPC::System::Simple ();
 use Exporter qw(import);
@@ -132,7 +132,7 @@ you can use L<Daiku> DSL to write your build procedure.
 
 See L</SYNOPSIS> for example of this usage.
 
-=head2 daiku command and Daikufile
+=head2 L<daiku> command and Daikufile
 
 L<Daiku> comes with L<daiku> command-line tool.
 Just like C<make> reads C<Makefile>, L<daiku> reads C<Daikufile> and runs the build procedure.
@@ -143,7 +143,7 @@ See L<daiku> for detail.
 
 The following functions are exported by default.
 
-=head2 desc
+=head2 C<< desc >>
 
 =over 4
 
@@ -154,7 +154,7 @@ The following functions are exported by default.
 Description of the following task.
 
 
-=head2 task
+=head2 C<< task >>
 
 =over 4
 
