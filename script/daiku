@@ -37,11 +37,24 @@ daiku - make(1) for Perl
 
 =item target
 
-=item target[arg1 arg2]
+The target task name to build.
+If omitted, it builds the task named C<default>.
 
-You can specify arguments of the task by bracket following in rake way.
-However arguments of daiku task is separated by spaces like traditional
-command line (Arguments of rake task is separated by comma).
+=item target[arg1 arg2 ...]
+
+You can specify arguments of the task in brackets.
+
+For example,
+
+    > cat Daikufile
+    task test => sub {
+        my ($task, @args) = @_;
+        sh qw(prove -lr), @args;
+    };
+    
+    > daiku 'test[t/hoge/fuga.t xt/piyo.t]'
+
+Arguments are separated by spaces (NOT commas).
 
 =back
 
@@ -51,11 +64,11 @@ command line (Arguments of rake task is separated by comma).
 
 =item -f, --file
 
-Use specifiled file as Daikufile.
+Use the specifiled file as Daikufile.
 
-=item -C, --direcotry
+=item -C, --directory
 
-Change to specified directory before reading the Daikufile or doing anything else.
+Change to the specified directory before reading the Daikufile or doing anything else.
 
 =item -h, --help
 

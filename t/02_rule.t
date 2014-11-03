@@ -15,6 +15,7 @@ file 'a.out' => [qw/b.o c.o/] => sub {
 };
 rule '.o' => '.c' => sub {
     my ($task, $dst, $src) = @_;
+    isa_ok $task, "Daiku::SuffixRule";
     note "Compiling: $src => $dst";
     compile($src => $dst)
 };

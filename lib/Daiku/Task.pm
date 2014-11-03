@@ -74,9 +74,50 @@ __END__
 
 =head1 NAME
 
-Daiku::Task - Task
+Daiku::Task - phony task
 
 =head1 DESCRIPTION
 
 This is a .PHONY task object.
 
+=head1 ATTRIBUTES
+
+=over 4
+
+=item C<< dst:Str >>
+
+Destination task name.
+
+=item C<< deps:ArrayRef[Str] >>
+
+Dependency task names.
+
+=item C<< code:CodeRef >>
+
+Callback function.
+
+=item C<< desc:Str >>
+
+Description of this task.
+
+=back
+
+=head1 METHODS
+
+=over 4
+
+=item C<< my $task = Daiku::Task->new(%args); >>
+
+Create a new instance of L<Daiku::Task>. Specify above attributes in C<%args>.
+
+=item C<< $task->build(); >>
+
+Build the target.
+
+I<Return Value>: The number of built jobs.
+
+=item C<< my $clone = $task->clone(); >>
+
+Create and return a clone of this C<$task>.
+
+=back

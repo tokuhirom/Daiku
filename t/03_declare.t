@@ -13,6 +13,8 @@ my $tmpdir = tmpdir();
 task 'all' => 'a.out';
 
 task 'clean', sub {
+    my ($task) = @_;
+    isa_ok $task, "Daiku::Task";
     unlink $_ for qw/b.o a.out c.o/;
 };
 

@@ -98,7 +98,7 @@ Daiku::File - file creation rule
 
 =head1 DESCRIPTION
 
-This is a file creation rule object for Daiku
+This is a file creation rule object for L<Daiku>
 
 =head1 ATTRIBUTES
 
@@ -110,11 +110,11 @@ Destination file name
 
 =item C<< deps:ArrayRef[Str] >>
 
-This is a dependency file names.
+Dependency file names.
 
 =item C<< code:CodeRef >>
 
-This is a callback function.
+Callback function.
 
 =back
 
@@ -124,7 +124,8 @@ This is a callback function.
 
 =item C<< my $file = Daiku::File->new(%args); >>
 
-Create a new instance of Daiku::File.
+Create a new instance of L<Daiku::File>.
+Specify above attributes in C<%args>.
 
 =item C<< $file->build(); >>
 
