@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/tokuhirom/Daiku.png?branch=master)](https://travis-ci.org/tokuhirom/Daiku) [![Coverage Status](https://coveralls.io/repos/tokuhirom/Daiku/badge.png?branch=master)](https://coveralls.io/r/tokuhirom/Daiku?branch=master)
+[![Build Status](https://travis-ci.org/tokuhirom/Daiku.svg?branch=master)](https://travis-ci.org/tokuhirom/Daiku) [![Coverage Status](https://img.shields.io/coveralls/tokuhirom/Daiku/master.svg)](https://coveralls.io/r/tokuhirom/Daiku?branch=master)
 # NAME
 
 Daiku - Make for Perl

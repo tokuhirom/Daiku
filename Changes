@@ -2,6 +2,10 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+1.003 2015-01-02T15:40:37Z
+
+    - use lib 'lib' implicitly in Daikufile
+
 1.002 2014-11-03T13:38:03Z
 
     - Documentation improvements. (debug-ito++)
