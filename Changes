@@ -2,6 +2,10 @@ Revision history for Perl module Daiku
 
 {{$NEXT}}
 
+1.004 2015-01-02T17:00:22Z
+
+    - Daiku::File can be a directory
+
 1.003 2015-01-02T15:40:37Z
 
     - use lib 'lib' implicitly in Daikufile
