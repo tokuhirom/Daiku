@@ -25,6 +25,7 @@ use strict;
 use warnings;
 use utf8;
 use autodie;
+use lib 'lib';
 
 # line 1 "$file"
 $code;
