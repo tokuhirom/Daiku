@@ -46,7 +46,7 @@ sub build {
     $self->log("Building SuffixRule: $target");
     my ($built, $need_rebuild, $sources) = $self->_build_deps($target);
 
-    if ($need_rebuild || !-f $target) {
+    if ($need_rebuild || !-e $target) {
         $built++;
         $self->code->($self, $target, @$sources);
     } else {
@@ -76,7 +76,7 @@ sub _build_deps {
         my $task = $self->registry->find_task($source);
         if ($task) {
             $built += $task->build($source);
-            if (-f $target && -f $source) {
+            if (-e $target && -e $source) {
                 $need_rebuild += 1 if _mtime($target) < _mtime($source);
             }
         } else {

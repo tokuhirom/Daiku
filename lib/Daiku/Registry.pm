@@ -62,7 +62,7 @@ sub find_task {
     for my $task (values %{$self->{tasks}}) {
         return $task if $task->match($target);
     }
-    if ( -f $target ) {
+    if ( -e $target ) {
         return Daiku::File->new( dst => $target );
     }
     return undef;

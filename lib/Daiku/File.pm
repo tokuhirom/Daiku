@@ -34,7 +34,7 @@ sub build {
 
     $self->log("Processing file: $self->{dst}");
     my ($built, $need_rebuild) = $self->_build_deps();
-    if ($need_rebuild || (!-f $self->dst)) {
+    if ($need_rebuild || (!-e $self->dst)) {
         $self->log("  Building file: $self->{dst}($need_rebuild)");
         $built++;
         $self->code->($self);
@@ -60,7 +60,7 @@ sub _build_deps {
         my $task = $self->registry->find_task($target);
         if ($task) {
             $built += $task->build($target);
-            if (-f $target) {
+            if (-e $target) {
                 $need_rebuild += $self->_check_need_rebuild($target);
             }
         } else {
@@ -74,7 +74,7 @@ sub _check_need_rebuild {
     my ($self, $target) = @_;
 
     my $m1 = _mtime($target);
-    return 0 unless -f $self->dst;
+    return 0 unless -e $self->dst;
 
     my $m2 = _mtime($self->dst);
 
